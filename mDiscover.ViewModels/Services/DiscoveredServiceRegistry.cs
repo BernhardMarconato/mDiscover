@@ -19,9 +19,10 @@ public partial class DiscoveredServiceRegistry : ObservableObject, IDisposable
     private readonly IUriLauncherService _launcherService;
     private readonly IExportService _exportService;
     private readonly ILogger<DiscoveredServiceRegistry> _logger;
+    private readonly TimeProvider _timeProvider;
+    private readonly ITimer _uiUpdateTimer;
 
     private readonly ConcurrentDictionary<string, DiscoveredServiceViewModel> _servicesMap = new(StringComparer.OrdinalIgnoreCase);
-    private int _isUiUpdateScheduled;
 
     // Last filter state cached for automatic background re-filtering on discovery events
     private string? _currentSearchText;
@@ -55,7 +56,8 @@ public partial class DiscoveredServiceRegistry : ObservableObject, IDisposable
         IClipboardService clipboardService,
         IUriLauncherService launcherService,
         IExportService exportService,
-        ILogger<DiscoveredServiceRegistry> logger)
+        ILogger<DiscoveredServiceRegistry> logger,
+        TimeProvider timeProvider)
     {
         _engine = engine;
         _dispatcher = dispatcher;
@@ -63,6 +65,20 @@ public partial class DiscoveredServiceRegistry : ObservableObject, IDisposable
         _launcherService = launcherService;
         _exportService = exportService;
         _logger = logger;
+        _timeProvider = timeProvider;
+
+        _uiUpdateTimer = _timeProvider.CreateTimer(
+            _ =>
+            {
+                _dispatcher.Enqueue(() =>
+                {
+                    ApplyFiltersAndSync();
+                    UpdateStats();
+                });
+            },
+            null,
+            Timeout.InfiniteTimeSpan,
+            Timeout.InfiniteTimeSpan);
 
         _engine.ServiceDiscovered += OnServiceDiscovered;
         _engine.ServiceUpdated += OnServiceUpdated;
@@ -147,18 +163,7 @@ public partial class DiscoveredServiceRegistry : ObservableObject, IDisposable
 
     private void ScheduleUiUpdate()
     {
-        if (Interlocked.CompareExchange(ref _isUiUpdateScheduled, 1, 0) == 0)
-        {
-            Task.Delay(50).ContinueWith(_ =>
-            {
-                _dispatcher.Enqueue(() =>
-                {
-                    Interlocked.Exchange(ref _isUiUpdateScheduled, 0);
-                    ApplyFiltersAndSync();
-                    UpdateStats();
-                });
-            });
-        }
+        _uiUpdateTimer.Change(TimeSpan.FromMilliseconds(50), Timeout.InfiniteTimeSpan);
     }
 
     private void ApplyFiltersAndSync()
@@ -212,6 +217,7 @@ public partial class DiscoveredServiceRegistry : ObservableObject, IDisposable
         _engine.ServiceDiscovered -= OnServiceDiscovered;
         _engine.ServiceUpdated -= OnServiceUpdated;
         _engine.ServiceLost -= OnServiceLost;
+        _uiUpdateTimer.Dispose();
         GC.SuppressFinalize(this);
     }
 }

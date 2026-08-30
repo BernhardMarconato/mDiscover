@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Time.Testing;
 using mDiscover.Core.Interfaces;
 using mDiscover.Core.Models;
 using mDiscover.Core.Services;
@@ -23,10 +24,11 @@ public class MainViewModelTests
     private readonly IExportService _exportService = ExportService.Default;
     private readonly ILogger<MainViewModel> _logger = NullLogger<MainViewModel>.Instance;
     private readonly ILogger<DiscoveredServiceRegistry> _registryLogger = NullLogger<DiscoveredServiceRegistry>.Instance;
+    private readonly FakeTimeProvider _timeProvider = new();
 
     private MainViewModel CreateViewModel()
     {
-        var registry = new DiscoveredServiceRegistry(_engine, _dispatcher, _clipboard, _launcher, _exportService, _registryLogger);
+        var registry = new DiscoveredServiceRegistry(_engine, _dispatcher, _clipboard, _launcher, _exportService, _registryLogger, _timeProvider);
         return new MainViewModel(_engine, _settingsService, _dispatcher, _clipboard, _launcher, _lifecycle, _pathService, _exportService, _logger, registry);
     }
 
@@ -68,7 +70,7 @@ public class MainViewModelTests
     }
 
     [Fact]
-    public async Task ServiceDiscovered_AddsServiceAndUpdatesCounts()
+    public void ServiceDiscovered_AddsServiceAndUpdatesCounts()
     {
         var vm = CreateViewModel();
 
@@ -87,8 +89,8 @@ public class MainViewModelTests
         // Raise engine event
         _engine.ServiceDiscovered += Raise.Event<EventHandler<IDnsSdDiscoveryProvider, ServiceDiscoveredEventArgs>>(_provider, new ServiceDiscoveredEventArgs(service));
 
-        // Wait for debounced UI update with xUnit v3 TestContext cancellation token
-        await Task.Delay(100, TestContext.Current.CancellationToken);
+        // Advance fake time to trigger the 50ms debounced UI update deterministically
+        _timeProvider.Advance(TimeSpan.FromMilliseconds(50));
 
         Assert.Equal(1, vm.Stats.ServicesCount);
         Assert.Single(vm.FilteredServices);
@@ -96,7 +98,7 @@ public class MainViewModelTests
     }
 
     [Fact]
-    public async Task SearchText_FiltersDiscoveredServices()
+    public void SearchText_FiltersDiscoveredServices()
     {
         var vm = CreateViewModel();
 
@@ -123,7 +125,8 @@ public class MainViewModelTests
         _engine.ServiceDiscovered += Raise.Event<EventHandler<IDnsSdDiscoveryProvider, ServiceDiscoveredEventArgs>>(_provider, new ServiceDiscoveredEventArgs(service1));
         _engine.ServiceDiscovered += Raise.Event<EventHandler<IDnsSdDiscoveryProvider, ServiceDiscoveredEventArgs>>(_provider, new ServiceDiscoveredEventArgs(service2));
 
-        await Task.Delay(100, TestContext.Current.CancellationToken);
+        // Advance fake time to trigger debounced sync
+        _timeProvider.Advance(TimeSpan.FromMilliseconds(50));
 
         Assert.Equal(2, vm.FilteredServices.Count);
 
@@ -138,7 +141,7 @@ public class MainViewModelTests
     }
 
     [Fact]
-    public async Task SelectedService_TracksSelectionState()
+    public void SelectedService_TracksSelectionState()
     {
         var vm = CreateViewModel();
 
@@ -154,7 +157,7 @@ public class MainViewModelTests
 
         _engine.ServiceDiscovered += Raise.Event<EventHandler<IDnsSdDiscoveryProvider, ServiceDiscoveredEventArgs>>(_provider, new ServiceDiscoveredEventArgs(service));
 
-        await Task.Delay(100, TestContext.Current.CancellationToken);
+        _timeProvider.Advance(TimeSpan.FromMilliseconds(50));
 
         var target = vm.FilteredServices[0];
         vm.SelectedService = target;
