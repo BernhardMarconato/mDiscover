@@ -20,7 +20,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -35,7 +35,7 @@ jobs:
           Write-Host "Building release for version: $version (Tag: $rawTag)"
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
 
@@ -59,7 +59,7 @@ jobs:
             --verbosity minimal
 
       - name: Upload Store bundle & symbol artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mDiscover-${{ steps.get_version.outputs.TAG }}-StorePackage
           path: ${{ github.workspace }}\AppxPackages\**\*
