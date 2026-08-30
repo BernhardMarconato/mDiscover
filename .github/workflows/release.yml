@@ -58,11 +58,11 @@ jobs:
             -p:Version=${{ steps.get_version.outputs.VERSION }} `
             --verbosity minimal
 
-      - name: Upload Store bundle & symbol artifacts
+      - name: Upload Store upload package (.msixupload)
         uses: actions/upload-artifact@v4
         with:
           name: mDiscover-${{ steps.get_version.outputs.TAG }}-StorePackage
-          path: ${{ github.workspace }}\AppxPackages\**\*
+          path: ${{ github.workspace }}\AppxPackages\*.msixupload
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v3
