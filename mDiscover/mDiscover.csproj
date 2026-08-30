@@ -1,0 +1,86 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<RootNamespace>mDiscover</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>Assets\app.ico</ApplicationIcon>
+		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+		<UseWinUI>true</UseWinUI>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<PublishAot>true</PublishAot>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<!-- Serilog is not fully trim-annotated; partial trim mode keeps non-annotated assemblies intact
+		     while still trimming everything that explicitly declares trim-compatibility. -->
+		<TrimMode>partial</TrimMode>
+		<NoWarn>$(NoWarn);CS8625;CS8600</NoWarn>
+    <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(WindowsPackageType)' == 'None'">
+		<DefineConstants>$(DefineConstants);UNPACKAGED</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\mDiscover.Core\mDiscover.Core.csproj" />
+		<ProjectReference Include="..\mDiscover.ViewModels\mDiscover.ViewModels.csproj" />
+		<ProjectReference Include="..\mDiscover.Providers.Win32\mDiscover.Providers.Win32.csproj" />
+		<ProjectReference Include="..\mDiscover.Providers.WinRt\mDiscover.Providers.WinRt.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.3.6" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.4.0" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="*" />
+
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.260610101">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.WinApp" Version="0.6.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.3.260402-preview2" />
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.3.260402-preview2" />
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.3.260402-preview2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
+		<PackageReference Include="ReswPlus" Version="0.5.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="8.0.0-nblumhardt-02322" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.321" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Manifest Include="$(ApplicationManifest)" />
+		<AppxManifest Include="Package.Debug.appxmanifest" Condition="'$(Configuration)' == 'Debug'">
+			<SubType>Designer</SubType>
+		</AppxManifest>
+		<AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)' != 'Debug'">
+			<SubType>Designer</SubType>
+		</AppxManifest>
+	</ItemGroup>
+
+	<!-- Target to automatically synchronize the MSIX Identity Version with $(Version) -->
+	<Target Name="SyncPackageAppxManifestVersion" BeforeTargets="BeforeGenerateAppxPackageRecipe;BeforeBuild" Condition="'$(EnableMsixTooling)' == 'true'">
+		<PropertyGroup>
+			<_RawVersion>$(Version)</_RawVersion>
+			<_RawVersion Condition="'$(_RawVersion)' == ''">1.0.0</_RawVersion>
+			<!-- Ensure 4-part quad integer for MSIX Identity Version (e.g. 1.0.0 -> 1.0.0.0) -->
+			<_DotCount>$([System.Text.RegularExpressions.Regex]::Matches($(_RawVersion), "\.").Count)</_DotCount>
+			<_ManifestVersion Condition="'$(_DotCount)' == '2'">$(_RawVersion).0</_ManifestVersion>
+			<_ManifestVersion Condition="'$(_DotCount)' == '3'">$(_RawVersion)</_ManifestVersion>
+			<_ManifestVersion Condition="'$(_ManifestVersion)' == ''">$(_RawVersion).0.0</_ManifestVersion>
+		</PropertyGroup>
+		<XmlPoke XmlInputPath="@(AppxManifest)" Query="/x:Package/x:Identity/@Version" Value="$(_ManifestVersion)" Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/appx/manifest/foundation/windows10' /&gt;" Condition="'@(AppxManifest)' != '' and Exists('%(AppxManifest.FullPath)')" />
+	</Target>
+
+	<ItemGroup>
+		<Content Include="Assets\**" />
+		<None Include="Licenses\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

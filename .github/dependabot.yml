@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # Keep GitHub Actions up to date
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # Keep NuGet packages up to date
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    ignore:
+      # Ignore pre-release versions unless already on one
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]

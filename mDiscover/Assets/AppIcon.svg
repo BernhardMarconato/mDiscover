@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Fluent Drop Shadows -->
+    <filter id="fluent-shadow-outer" filterUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#001833" flood-opacity="0.25" />
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#001833" flood-opacity="0.12" />
+    </filter>
+    <filter id="fluent-shadow-mid" filterUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#14082B" flood-opacity="0.22" />
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#14082B" flood-opacity="0.10" />
+    </filter>
+    <filter id="fluent-shadow-inner" filterUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#380A18" flood-opacity="0.20" />
+    </filter>
+    <filter id="beacon-glow" filterUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#FF7700" flood-opacity="0.30" />
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#802000" flood-opacity="0.16" />
+    </filter>
+
+    <!-- Outer Wave -->
+    <linearGradient id="grad-wave-outer" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#40B5FF" />
+      <stop offset="60%" stop-color="#0078D4" />
+      <stop offset="100%" stop-color="#005FB8" />
+    </linearGradient>
+
+    <!-- Mid Wave -->
+    <linearGradient id="grad-wave-mid" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="50%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#1B7FE2" />
+    </linearGradient>
+
+    <!-- Inner Wave -->
+    <linearGradient id="grad-wave-inner" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B35" />
+      <stop offset="50%" stop-color="#FF3366" />
+      <stop offset="100%" stop-color="#D6186E" />
+    </linearGradient>
+
+    <!-- Beacon Dot -->
+    <radialGradient id="grad-beacon-body" cx="35%" cy="32%" r="70%">
+      <stop offset="0%" stop-color="#FFE070" />
+      <stop offset="35%" stop-color="#FF8A00" />
+      <stop offset="85%" stop-color="#E84000" />
+      <stop offset="100%" stop-color="#B81A00" />
+    </radialGradient>
+  </defs>
+
+  <!-- Outer Wave Layer (r=130, span ±52°) -->
+  <g id="layer-outer-wave" filter="url(#fluent-shadow-outer)">
+    <path d="M 230.44 103.96 A 130 130 0 0 0 25.56 103.96" fill="none" stroke="url(#grad-wave-outer)" stroke-width="20" stroke-linecap="round" />
+  </g>
+
+  <!-- Mid Wave Layer (r=86, span ±52°) -->
+  <g id="layer-mid-wave" filter="url(#fluent-shadow-mid)">
+    <path d="M 195.77 131.05 A 86 86 0 0 0 60.23 131.05" fill="none" stroke="url(#grad-wave-mid)" stroke-width="17.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Inner Wave Layer (r=46, span ±52°) -->
+  <g id="layer-inner-wave" filter="url(#fluent-shadow-inner)">
+    <path d="M 164.25 155.68 A 46 46 0 0 0 91.75 155.68" fill="none" stroke="url(#grad-wave-inner)" stroke-width="15" stroke-linecap="round" />
+  </g>
+
+  <!-- Radiant Transmitter Node -->
+  <g id="layer-beacon" filter="url(#beacon-glow)">
+    <circle cx="128" cy="184" r="18" fill="url(#grad-beacon-body)" />
+  </g>
+</svg>

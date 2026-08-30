@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "mDiscover (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    },
+    "mDiscover (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

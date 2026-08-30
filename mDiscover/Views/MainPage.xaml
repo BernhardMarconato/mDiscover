@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="mDiscover.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:customControls="using:mDiscover.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:mDiscover.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:strings="using:mDiscover.Strings"
+    xmlns:vm="using:mDiscover.ViewModels"
+    mc:Ignorable="d">
+
+    <Grid Background="Transparent" SizeChanged="OnRootGridSizeChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" MinWidth="320" />
+        </Grid.ColumnDefinitions>
+
+        <!--  1. Left Navigation Pane (Mica translucent backdrop shines through)  -->
+        <Grid
+            x:Name="LeftPaneGrid"
+            Grid.Column="0"
+            Width="{x:Bind ViewModel.Settings.SidebarWidth, Mode=TwoWay}"
+            MinWidth="260"
+            MaxWidth="600"
+            Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Left Pane Header / Actions & Stats (Modularized Component)  -->
+            <customControls:MainToolbarControl
+                Grid.Row="0"
+                Margin="12,0"
+                ViewModel="{x:Bind ViewModel}" />
+
+            <!--  Left Pane Discovery Tree  -->
+            <Grid Grid.Row="1">
+
+                <!--  1. Initial Discovery Loading State  -->
+                <StackPanel
+                    Padding="28"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="16"
+                    Visibility="{x:Bind ViewModel.IsInitialDiscoveryLoading, Mode=OneWay, Converter={StaticResource BoolToVisConverter}}">
+                    <ProgressRing
+                        Width="32"
+                        Height="32"
+                        HorizontalAlignment="Center"
+                        IsActive="True" />
+                    <StackPanel HorizontalAlignment="Center" Spacing="4">
+                        <TextBlock
+                            Style="{ThemeResource BodyStrongTextBlockStyle}"
+                            Text="{x:Bind strings:Resources.Discovery_LoadingTitle}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            MaxWidth="260"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{x:Bind strings:Resources.Discovery_LoadingSubtitle}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!--  2. Search / Filter Empty State ("No services found")  -->
+                <StackPanel
+                    Padding="28"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="12"
+                    Visibility="{x:Bind ViewModel.IsNoSearchResults, Mode=OneWay, Converter={StaticResource BoolToVisConverter}}">
+                    <FontIcon
+                        FontSize="36"
+                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                        Glyph="{x:Bind helpers:FluentGlyphs.Search}" />
+                    <StackPanel HorizontalAlignment="Center" Spacing="4">
+                        <TextBlock
+                            Style="{ThemeResource BodyStrongTextBlockStyle}"
+                            Text="{x:Bind strings:Resources.Discovery_NoResultsTitle}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            MaxWidth="260"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{ThemeResource CaptionTextBlockStyle}"
+                            Text="{x:Bind strings:Resources.Discovery_NoResultsSubtitle}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!--  Groups & Items List  -->
+                <ScrollViewer Visibility="{x:Bind ViewModel.HasDiscoveredItems, Mode=OneWay, Converter={StaticResource BoolToVisConverter}}">
+                    <ItemsControl Margin="12" ItemsSource="{x:Bind ViewModel.GroupedServices}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ServiceGroupViewModel">
+                                <Expander
+                                    Margin="0,0,0,6"
+                                    Padding="0"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    IsExpanded="True">
+                                    <!--  Group Header  -->
+                                    <Expander.Header>
+                                        <Grid VerticalAlignment="Center" ColumnSpacing="16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <FontIcon
+                                                Grid.Column="0"
+                                                FontSize="16"
+                                                Foreground="{ThemeResource AccentFillColorDefaultBrush}"
+                                                Glyph="{x:Bind helpers:ServiceDisplayFormatter.FormatGroupGlyph(Title, Mode), Mode=OneWay}" />
+                                            <Grid Grid.Column="1" VerticalAlignment="Center">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    MaxLines="1"
+                                                    Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                                    Text="{x:Bind Title, Mode=OneWay}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    TextWrapping="NoWrap"
+                                                    ToolTipService.ToolTip="{x:Bind Title, Mode=OneWay}" />
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    MaxLines="1"
+                                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{x:Bind Subtitle, Mode=OneWay}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    TextWrapping="NoWrap"
+                                                    ToolTipService.ToolTip="{x:Bind Subtitle, Mode=OneWay}" />
+                                            </Grid>
+                                            <InfoBadge Grid.Column="2" Value="{x:Bind Count, Mode=OneWay}" />
+
+                                        </Grid>
+                                    </Expander.Header>
+
+                                    <!--  Group Child Items (Modular ServiceCardControl)  -->
+                                    <ListView
+                                        Margin="0"
+                                        Padding="0"
+                                        ItemsSource="{x:Bind Services}"
+                                        Loaded="OnServiceListViewLoaded"
+                                        SelectionChanged="OnServiceListViewSelectionChanged"
+                                        SelectionMode="Single"
+                                        Unloaded="OnServiceListViewUnloaded">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:DiscoveredServiceViewModel">
+                                                <customControls:ServiceCardControl ViewModel="{x:Bind}" />
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <!--  2. Column Sizer for Resizing Left Sidebar  -->
+        <controls:ContentSizer
+            Grid.Column="1"
+            Margin="0"
+            Orientation="Vertical"
+            TargetControl="{x:Bind LeftPaneGrid}" />
+
+        <!--  3. Right Pane: Elevated Content Canvas (Matches WinUI NavigationView Elevation)  -->
+        <Border
+            Grid.Column="2"
+            MinWidth="320"
+            Background="{ThemeResource LayerFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1,1,0,0"
+            CornerRadius="8,0,0,0">
+            <!--  Modularized Service Inspector Control  -->
+            <customControls:ServiceInspectorControl ViewModel="{x:Bind ViewModel.SelectedService, Mode=OneWay}" />
+        </Border>
+    </Grid>
+</Page>

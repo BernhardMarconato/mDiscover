@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid
+    x:Class="mDiscover.Views.MainWindowContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:customControls="using:mDiscover.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:mDiscover.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:strings="using:mDiscover.Strings"
+    xmlns:vm="using:mDiscover.ViewModels"
+    mc:Ignorable="d">
+
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <!--  Windows App SDK TitleBar with Real App Icon, Global Search, and Settings Button  -->
+    <TitleBar
+        x:Name="AppTitleBar"
+        Title="{x:Bind strings:Resources.App_Title}"
+        Grid.Row="0"
+        BackRequested="OnTitleBarBackRequested"
+        IsBackButtonVisible="{x:Bind ViewModel.Settings.IsSettingsOpen, Mode=OneWay}"
+        IsPaneToggleButtonVisible="False"
+        Subtitle="{x:Bind strings:Resources.App_Subtitle}">
+        <TitleBar.IconSource>
+            <ImageIconSource ImageSource="ms-appx:///Assets/Square44x44Logo.png" />
+        </TitleBar.IconSource>
+
+        <TitleBar.Content>
+            <!--  Global Fast Search (visible on discovery view)  -->
+            <AutoSuggestBox
+                x:Name="SearchBox"
+                MinWidth="240"
+                MaxWidth="480"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                IsEnabled="{x:Bind IsSearchVisible(ViewModel.Settings.IsSettingsOpen), Mode=OneWay}"
+                PlaceholderText="{x:Bind strings:Resources.App_SearchPlaceholder}"
+                QueryIcon="Find"
+                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </TitleBar.Content>
+
+        <TitleBar.RightHeader>
+            <Button
+                x:Name="SettingsButton"
+                Height="32"
+                Margin="8,0"
+                VerticalAlignment="Center"
+                Command="{x:Bind ViewModel.Settings.ToggleSettingsCommand}"
+                Style="{ThemeResource SubtleButtonStyle}"
+                ToolTipService.ToolTip="{x:Bind strings:Resources.App_SettingsTooltip}">
+                <FontIcon FontSize="14" Glyph="{x:Bind helpers:FluentGlyphs.Settings}" />
+            </Button>
+        </TitleBar.RightHeader>
+    </TitleBar>
+
+    <Frame x:Name="ContentFrame" Grid.Row="1" />
+</Grid>

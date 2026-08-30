@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="0" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- App Header & TitleBar & Package Manifest -->
+  <data name="App_Title" xml:space="preserve">
+    <value>mDiscover</value>
+  </data>
+  <data name="App_Title_Dev" xml:space="preserve">
+    <value>mDiscover (Dev)</value>
+  </data>
+  <data name="App_Description" xml:space="preserve">
+    <value>A native WinUI 3 tool to discover, inspect, and debug Bonjour and DNS-SD services on your local network.</value>
+  </data>
+  <data name="App_PublisherDisplayName" xml:space="preserve">
+    <value>BurnArc</value>
+  </data>
+  <data name="App_Subtitle" xml:space="preserve">
+    <value>Browse DNS-SD/mDNS/Bonjour</value>
+  </data>
+  <data name="App_SearchPlaceholder" xml:space="preserve">
+    <value>Search instances, types, hosts, IPs or TXT…</value>
+  </data>
+  <data name="App_SettingsTooltip" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+
+  <!-- Action Bar -->
+  <data name="Action_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Action_RefreshTooltip" xml:space="preserve">
+    <value>Refresh discovery and re-scan network</value>
+  </data>
+  <data name="Action_Group" xml:space="preserve">
+    <value>Group…</value>
+  </data>
+  <data name="Grouping_ButtonTooltip" xml:space="preserve">
+    <value>Group instances by…</value>
+  </data>
+  <data name="Grouping_ByType" xml:space="preserve">
+    <value>By service type</value>
+  </data>
+  <data name="Grouping_ByHost" xml:space="preserve">
+    <value>By host / device</value>
+  </data>
+  <data name="Action_Sort" xml:space="preserve">
+    <value>Sort…</value>
+  </data>
+  <data name="Sort_ButtonTooltip" xml:space="preserve">
+    <value>Sort instances by…</value>
+  </data>
+  <data name="Sort_ByName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Sort_ByAddress" xml:space="preserve">
+    <value>IP address</value>
+  </data>
+  <data name="Sort_ByPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="Sort_ByRecent" xml:space="preserve">
+    <value>Recently discovered</value>
+  </data>
+  <data name="Sort_Descending" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="Sort_Ascending" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <!-- Statistics / Status Count (Pluralization & Format) -->
+  <data name="Stats_Services_One" xml:space="preserve">
+    <value>{0} instance</value>
+    <comment>#Format[Plural Int]</comment>
+  </data>
+  <data name="Stats_Services_Other" xml:space="preserve">
+    <value>{0} instances</value>
+  </data>
+  <data name="Stats_Types_One" xml:space="preserve">
+    <value>{0} type</value>
+    <comment>#Format[Plural Int]</comment>
+  </data>
+  <data name="Stats_Types_Other" xml:space="preserve">
+    <value>{0} types</value>
+  </data>
+
+  <!-- Export Formats -->
+  <data name="Format_Markdown" xml:space="preserve">
+    <value>Markdown</value>
+  </data>
+  <data name="Format_Json" xml:space="preserve">
+    <value>JSON</value>
+  </data>
+  <data name="Format_Csv" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="Format_Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+
+  <!-- Copy & Export Actions and Tooltips -->
+  <data name="Copy_ButtonLabel" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Copy_AsFormat" xml:space="preserve">
+    <value>Copy as {0}</value>
+    <comment>#Format[String format]</comment>
+  </data>
+  <data name="Export_AllAsFormat" xml:space="preserve">
+    <value>Copy all instances as {0}</value>
+    <comment>#Format[String format]</comment>
+  </data>
+
+  <!-- Context Menu Copy Actions -->
+  <data name="Copy_IpAddress" xml:space="preserve">
+    <value>Copy IP address</value>
+  </data>
+  <data name="Copy_Endpoint" xml:space="preserve">
+    <value>Copy endpoint</value>
+  </data>
+  <data name="Copy_HostName" xml:space="preserve">
+    <value>Copy hostname</value>
+  </data>
+  <data name="Copy_FullServicePath" xml:space="preserve">
+    <value>Copy full service path</value>
+  </data>
+  <data name="Copy_AsMarkdown" xml:space="preserve">
+    <value>Copy as Markdown</value>
+  </data>
+  <data name="Copy_AsJson" xml:space="preserve">
+    <value>Copy as JSON</value>
+  </data>
+  <data name="Copy_AsCsv" xml:space="preserve">
+    <value>Copy as CSV</value>
+  </data>
+  <data name="Copy_AsText" xml:space="preserve">
+    <value>Copy as Text</value>
+  </data>
+
+  <data name="Export_ToastTitle" xml:space="preserve">
+    <value>Copied to clipboard</value>
+  </data>
+  <data name="Action_Browse" xml:space="preserve">
+    <value>Open in browser</value>
+  </data>
+
+  <!-- Inspector Section Headers -->
+  <data name="Inspector_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Inspector_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Inspector_Unreachable" xml:space="preserve">
+    <value>Unreachable</value>
+  </data>
+  <data name="Inspector_NetworkEndpoint" xml:space="preserve">
+    <value>Network endpoint</value>
+  </data>
+  <data name="Inspector_HostAndDomain" xml:space="preserve">
+    <value>Host and domain</value>
+  </data>
+  <data name="Inspector_PrimaryEndpoint" xml:space="preserve">
+    <value>Primary endpoint</value>
+  </data>
+  <data name="Inspector_IpAddresses" xml:space="preserve">
+    <value>IP addresses</value>
+  </data>
+  <data name="Inspector_FallbackResolutionTooltip" xml:space="preserve">
+    <value>Direct mDNS query timed out; fallback via Windows system DNS was used</value>
+  </data>
+  <data name="Inspector_TxtAttributes" xml:space="preserve">
+    <value>TXT attributes</value>
+  </data>
+  <data name="Inspector_NoTxtAttributes" xml:space="preserve">
+    <value>No TXT attributes published</value>
+  </data>
+  <data name="Inspector_Activity" xml:space="preserve">
+    <value>Discovery &amp; activity</value>
+  </data>
+  <data name="Inspector_FirstSeen" xml:space="preserve">
+    <value>First discovered</value>
+  </data>
+  <data name="Inspector_LastSeen" xml:space="preserve">
+    <value>Last seen</value>
+  </data>
+  <data name="Inspector_FullServiceDomainTooltip" xml:space="preserve">
+    <value>Fully Qualified Domain Name (FQDN), combining Instance Name, Service Type, and mDNS Domain (.local)</value>
+  </data>
+  <data name="Inspector_EmptyTitle" xml:space="preserve">
+    <value>Select a service instance</value>
+  </data>
+  <data name="Inspector_EmptySubtitle" xml:space="preserve">
+    <value>Click any service instance on the left to inspect its endpoints, IP addresses, and TXT attributes.</value>
+  </data>
+
+  <!-- Discovery Loading State -->
+  <data name="Discovery_LoadingTitle" xml:space="preserve">
+    <value>Discovering service instances…</value>
+  </data>
+  <data name="Discovery_LoadingSubtitle" xml:space="preserve">
+    <value>Listening for multicast DNS-SD broadcasts on local subnet…</value>
+  </data>
+  <data name="Discovery_NoResultsTitle" xml:space="preserve">
+    <value>No instances found</value>
+  </data>
+  <data name="Discovery_NoResultsSubtitle" xml:space="preserve">
+    <value>No service instances match your current search query or filter.</value>
+  </data>
+
+  <!-- Settings Page -->
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_Subtitle" xml:space="preserve">
+    <value>Configure how instances are discovered using DNS-SD</value>
+  </data>
+  <data name="Settings_DiscoveryEngineHeader" xml:space="preserve">
+    <value>Discovery engine</value>
+  </data>
+  <data name="Settings_ActiveEngineCard" xml:space="preserve">
+    <value>Active discovery engine</value>
+  </data>
+  <data name="Settings_ActiveEngineDescription" xml:space="preserve">
+    <value>Select the underlying framework used for DNS-SD resolution</value>
+  </data>
+  <data name="Settings_DiscoveryModeHeader" xml:space="preserve">
+    <value>Discovery mode</value>
+  </data>
+  <data name="Settings_DiscoveryModeDescription" xml:space="preserve">
+    <value>Choose between RFC 6763 wildcard discovery or explicit targeted scanning</value>
+  </data>
+  <data name="Settings_UniversalWildcardHeader" xml:space="preserve">
+    <value>Universal wildcard (_services._dns-sd._udp.local)</value>
+  </data>
+  <data name="Settings_UniversalWildcardDescription" xml:space="preserve">
+    <value>Dynamically discovers all advertised network services without predefined lists. Requires Win32 engine.</value>
+  </data>
+  <data name="Settings_TargetedCatalogHeader" xml:space="preserve">
+    <value>Targeted service types catalog</value>
+  </data>
+  <data name="Settings_TargetedCatalogDescription" xml:space="preserve">
+    <value>Explicitly queries only the services enabled in the catalog below.</value>
+  </data>
+  <data name="Settings_HybridDiscoveryHeader" xml:space="preserve">
+    <value>Hybrid discovery (wildcard + common catalog)</value>
+  </data>
+  <data name="Settings_HybridDiscoveryDescription" xml:space="preserve">
+    <value>Combines universal wildcard discovery with additional queries for devices that ignore meta-queries.</value>
+  </data>
+  <data name="Settings_CatalogHeader" xml:space="preserve">
+    <value>Service catalog</value>
+  </data>
+  <data name="Settings_CustomServicesCard" xml:space="preserve">
+    <value>Custom service types</value>
+  </data>
+  <data name="Settings_CustomServicesDescription" xml:space="preserve">
+    <value>Add and manage custom DNS-SD service types for discovery scans</value>
+  </data>
+  <data name="Settings_AddCustomServiceCard" xml:space="preserve">
+    <value>Add custom service type</value>
+  </data>
+  <data name="Settings_AddCustomServiceDescription" xml:space="preserve">
+    <value>Enter a custom DNS-SD service type (e.g. _http._tcp)</value>
+  </data>
+  <data name="Settings_AddServiceButton" xml:space="preserve">
+    <value>Add type</value>
+  </data>
+  <data name="Settings_ResetCustomServices" xml:space="preserve">
+    <value>Clear all</value>
+  </data>
+  <data name="Settings_DeleteCustomTypeTooltip" xml:space="preserve">
+    <value>Remove custom service type</value>
+  </data>
+  <data name="Settings_NoCustomServices" xml:space="preserve">
+    <value>No custom service types configured</value>
+  </data>
+  <data name="Settings_BuiltInServicesCard" xml:space="preserve">
+    <value>Built-in service catalog</value>
+  </data>
+  <data name="Settings_BuiltInServicesDescription" xml:space="preserve">
+    <value>Toggle individual built-in service types for targeted scans or when devices ignore meta-queries.</value>
+  </data>
+  <data name="Settings_SelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="Settings_DeselectAll" xml:space="preserve">
+    <value>Deselect all</value>
+  </data>
+  <data name="Settings_AboutHeader" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="About_Copyright" xml:space="preserve">
+    <value>© 2026 BurnArc (Bernhard Marconato)</value>
+  </data>
+  <data name="About_GitHubRepo" xml:space="preserve">
+    <value>GitHub repository</value>
+  </data>
+  <data name="About_License" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="About_LicenseValue" xml:space="preserve">
+    <value>MIT License (Open Source)
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.</value>
+  </data>
+  <data name="About_ViewLicense" xml:space="preserve">
+    <value>View license</value>
+  </data>
+  <data name="About_ThirdPartyLicenses" xml:space="preserve">
+    <value>Third-party notices &amp; dependencies</value>
+  </data>
+  <data name="Action_ViewLicenses" xml:space="preserve">
+    <value>View licenses</value>
+  </data>
+  <data name="About_LogFolder" xml:space="preserve">
+    <value>Diagnostic logs</value>
+  </data>
+  <data name="Action_OpenLogs" xml:space="preserve">
+    <value>Open log folder</value>
+  </data>
+  <data name="Settings_AppearanceHeader" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_ThemeCard" xml:space="preserve">
+    <value>App theme</value>
+  </data>
+  <data name="Settings_ThemeDescription" xml:space="preserve">
+    <value>Select which app theme to display</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Use system setting</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Theme_RestartRequired" xml:space="preserve">
+    <value>Theme preference updated. Restart the app to apply.</value>
+  </data>
+  <data name="Theme_RestartButton" xml:space="preserve">
+    <value>Restart now</value>
+  </data>
+
+  <!-- Categories -->
+  <data name="Category_WebAndApi" xml:space="preserve">
+    <value>Web &amp; API</value>
+  </data>
+  <data name="Category_SmartHomeAndIot" xml:space="preserve">
+    <value>Smart Home &amp; IoT</value>
+  </data>
+  <data name="Category_MediaAndAudio" xml:space="preserve">
+    <value>Media &amp; audio</value>
+  </data>
+  <data name="Category_RemoteAccess" xml:space="preserve">
+    <value>Remote access</value>
+  </data>
+  <data name="Category_Developer" xml:space="preserve">
+    <value>Developer</value>
+  </data>
+  <data name="Category_PrintingAndWorkshop" xml:space="preserve">
+    <value>3D printing &amp; workshop</value>
+  </data>
+  <data name="Category_CamerasAndVideo" xml:space="preserve">
+    <value>Cameras &amp; video</value>
+  </data>
+  <data name="Category_PrintAndScan" xml:space="preserve">
+    <value>Print &amp; scan</value>
+  </data>
+  <data name="Category_StorageAndFiles" xml:space="preserve">
+    <value>Storage &amp; files</value>
+  </data>
+  <data name="Category_Infrastructure" xml:space="preserve">
+    <value>Infrastructure</value>
+  </data>
+  <data name="Category_Databases" xml:space="preserve">
+    <value>Databases</value>
+  </data>
+  <data name="Category_AppleEcosystem" xml:space="preserve">
+    <value>Apple ecosystem</value>
+  </data>
+  <data name="Category_OtherServices" xml:space="preserve">
+    <value>Other services</value>
+  </data>
+
+  <!-- Resolution States -->
+  <data name="Inspector_ResolvingDetails" xml:space="preserve">
+    <value>Resolving network endpoint…</value>
+  </data>
+  <data name="Inspector_ResolutionFailed" xml:space="preserve">
+    <value>DNS resolution failed</value>
+  </data>
+  <data name="Inspector_UnspecifiedEndpoint" xml:space="preserve">
+    <value>Unspecified endpoint</value>
+  </data>
+  <data name="Inspector_ResolvingHost" xml:space="preserve">
+    <value>Resolving host…</value>
+  </data>
+  <data name="Inspector_HostUnavailable" xml:space="preserve">
+    <value>Host unavailable</value>
+  </data>
+  <data name="Inspector_UnspecifiedHost" xml:space="preserve">
+    <value>Unspecified host</value>
+  </data>
+  <data name="Inspector_ResolvingIpAddresses" xml:space="preserve">
+    <value>Resolving IP addresses…</value>
+  </data>
+  <data name="Inspector_NoIpAddressesFound" xml:space="preserve">
+    <value>No IP addresses resolved</value>
+  </data>
+  <data name="Inspector_ResolvingSubtitle" xml:space="preserve">
+    <value>Resolving…</value>
+  </data>
+  <data name="Action_Retry" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+
+  <!-- Resolution Errors -->
+  <data name="ResolutionError_NoHostName" xml:space="preserve">
+    <value>No host name was provided for resolution.</value>
+  </data>
+  <data name="ResolutionError_NoSrvRecords" xml:space="preserve">
+    <value>The device did not publish DNS-SD service records.</value>
+  </data>
+  <data name="ResolutionError_NoAddressesFound" xml:space="preserve">
+    <value>No IP addresses could be found for host “{0}”.</value>
+    <comment>#Format[String hostname]</comment>
+  </data>
+  <data name="ResolutionError_DnsQueryFailed" xml:space="preserve">
+    <value>{0}</value>
+    <comment>#Format[String details]</comment>
+  </data>
+  <data name="ResolutionError_Timeout" xml:space="preserve">
+    <value>Resolution timed out.</value>
+  </data>
+  <data name="ResolutionError_Generic" xml:space="preserve">
+    <value>Could not resolve network endpoint or host IP.</value>
+  </data>
+
+  <!-- Providers -->
+  <data name="Provider_WinRt" xml:space="preserve">
+    <value>WinRT DeviceWatcher</value>
+  </data>
+  <data name="Provider_Win32" xml:space="preserve">
+    <value>Win32 DnsServiceBrowse (dnsapi.dll)</value>
+  </data>
+  <data name="Provider_Fake" xml:space="preserve">
+    <value>Mock / Demo Engine (Debug)</value>
+  </data>
+
+  <!-- Grouping -->
+  <data name="Grouping_UnknownHost" xml:space="preserve">
+    <value>Unknown host/device</value>
+  </data>
+  <data name="Grouping_HostSubtitle" xml:space="preserve">
+    <value>Host/network device</value>
+  </data>
+
+  <!-- Export Notifications (Pluralized with Format) -->
+  <data name="Export_Notification_One" xml:space="preserve">
+    <value>Copied {0} instance to clipboard as {1}</value>
+    <comment>#Format[Plural Int count, String format]</comment>
+  </data>
+  <data name="Export_Notification_Other" xml:space="preserve">
+    <value>Copied {0} instances to clipboard as {1}</value>
+  </data>
+
+  <!-- Export Content Labels -->
+  <data name="Export_Label_Service" xml:space="preserve">
+    <value>Instance</value>
+  </data>
+  <data name="Export_Label_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Export_Label_Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Export_Label_Endpoint" xml:space="preserve">
+    <value>Endpoint</value>
+  </data>
+  <data name="Export_Label_IPv4" xml:space="preserve">
+    <value>IPv4</value>
+  </data>
+  <data name="Export_Label_IPv6" xml:space="preserve">
+    <value>IPv6</value>
+  </data>
+  <data name="Export_Label_TxtAttributes" xml:space="preserve">
+    <value>TXT attributes</value>
+  </data>
+  <data name="Export_Label_Unspecified" xml:space="preserve">
+    <value>Unspecified</value>
+  </data>
+  <data name="Export_Markdown_Title" xml:space="preserve">
+    <value>Discovered DNS-SD service instances</value>
+  </data>
+  <data name="Export_Markdown_ExportedOn" xml:space="preserve">
+    <value>Date: </value>
+  </data>
+  <data name="Export_Table_ServiceName" xml:space="preserve">
+    <value>Instance name</value>
+  </data>
+  <data name="Export_Table_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Export_Table_Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Export_Table_Endpoint" xml:space="preserve">
+    <value>Endpoint</value>
+  </data>
+  <data name="Export_Table_IpAddresses" xml:space="preserve">
+    <value>IP addresses</value>
+  </data>
+  <data name="Export_Table_TxtAttributes" xml:space="preserve">
+    <value>TXT attributes</value>
+  </data>
+
+  <!-- Privacy Policy -->
+  <data name="About_PrivacyPolicy" xml:space="preserve">
+    <value>Privacy policy</value>
+  </data>
+  <data name="About_ViewPrivacyPolicy" xml:space="preserve">
+    <value>View privacy policy</value>
+  </data>
+</root>

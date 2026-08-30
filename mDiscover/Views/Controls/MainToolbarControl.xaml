@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="mDiscover.Views.Controls.MainToolbarControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:mDiscover.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:mDiscover.Core.Models"
+    xmlns:strings="using:mDiscover.Strings"
+    xmlns:vm="using:mDiscover.ViewModels"
+    mc:Ignorable="d">
+    <Border
+        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+        BorderThickness="1"
+        CornerRadius="{ThemeResource ControlCornerRadius}">
+        <CommandBar
+            HorizontalAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            DefaultLabelPosition="Right"
+            IsDynamicOverflowEnabled="True"
+            Style="{StaticResource DefaultCommandBarStyle}">
+            <!--  CommandBar Content: Vertically Stacked Service & Type Counts (Localized & Pluralized)  -->
+            <CommandBar.Content>
+                <StackPanel
+                    Margin="12,0,8,0"
+                    VerticalAlignment="Center"
+                    Spacing="1">
+                    <TextBlock
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{ThemeResource CaptionTextBlockStyle}"
+                        Text="{x:Bind strings:Resources.Stats_Services(ViewModel.Stats.ServicesCount), Mode=OneWay}" />
+                    <TextBlock
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{ThemeResource CaptionTextBlockStyle}"
+                        Text="{x:Bind strings:Resources.Stats_Types(ViewModel.Stats.TypesCount), Mode=OneWay}" />
+                </StackPanel>
+            </CommandBar.Content>
+
+            <CommandBar.PrimaryCommands>
+                <AppBarSeparator />
+                <AppBarButton
+                    x:Name="RefreshAppBarButton"
+                    Command="{x:Bind ViewModel.RefreshCommand}"
+                    Icon="Refresh"
+                    Label="{x:Bind strings:Resources.Action_Refresh}"
+                    ToolTipService.ToolTip="{x:Bind strings:Resources.Action_RefreshTooltip}" />
+
+                <AppBarSeparator />
+
+                <AppBarElementContainer HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <SplitButton
+                        x:Name="ExportSplitButton"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        Command="{x:Bind ViewModel.ExportCommand}"
+                        Style="{StaticResource SplitButtonCommandBarStyle}"
+                        ToolTipService.ToolTip="{x:Bind helpers:ServiceDisplayFormatter.FormatExportTooltip(ViewModel.SelectedExportFormat), Mode=OneWay}">
+                        <Grid ColumnSpacing="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon
+                                Grid.Column="0"
+                                FontSize="{StaticResource AppBarButtonContentHeight}"
+                                Glyph="{x:Bind helpers:FluentGlyphs.Copy}" />
+                            <TextBlock Grid.Column="1" Text="{x:Bind strings:Resources.Copy_ButtonLabel}" />
+                            <TeachingTip
+                                x:Name="ExportToastTip"
+                                Title="{x:Bind strings:Resources.Export_ToastTitle}"
+                                IsLightDismissEnabled="True"
+                                IsOpen="{x:Bind ViewModel.IsExportNotificationOpen, Mode=TwoWay}"
+                                PreferredPlacement="Bottom"
+                                Subtitle="{x:Bind helpers:ServiceDisplayFormatter.FormatExportNotification(ViewModel.ExportNotificationCount, ViewModel.SelectedExportFormat), Mode=OneWay}"
+                                Target="{x:Bind ExportSplitButton}">
+                                <TeachingTip.IconSource>
+                                    <FontIconSource Glyph="{x:Bind helpers:FluentGlyphs.Copy}" />
+                                </TeachingTip.IconSource>
+                            </TeachingTip>
+                        </Grid>
+                        <SplitButton.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedRight">
+                                <MenuFlyoutItem
+                                    x:Name="ExportTextMenuItem"
+                                    Command="{x:Bind ViewModel.ExportCommand}"
+                                    CommandParameter="{x:Bind models:ExportFormat.Text}"
+                                    Text="{x:Bind strings:Resources.Format_Text}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportText}" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="ExportMarkdownMenuItem"
+                                    Command="{x:Bind ViewModel.ExportCommand}"
+                                    CommandParameter="{x:Bind models:ExportFormat.Markdown}"
+                                    Text="{x:Bind strings:Resources.Format_Markdown}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportMarkdown}" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="ExportCsvMenuItem"
+                                    Command="{x:Bind ViewModel.ExportCommand}"
+                                    CommandParameter="{x:Bind models:ExportFormat.Csv}"
+                                    Text="{x:Bind strings:Resources.Format_Csv}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportCsv}" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    x:Name="ExportJsonMenuItem"
+                                    Command="{x:Bind ViewModel.ExportCommand}"
+                                    CommandParameter="{x:Bind models:ExportFormat.Json}"
+                                    Text="{x:Bind strings:Resources.Format_Json}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportJson}" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </SplitButton.Flyout>
+                    </SplitButton>
+                </AppBarElementContainer>
+
+                <AppBarSeparator />
+
+                <AppBarButton
+                    x:Name="GroupAppBarButton"
+                    Label="{x:Bind strings:Resources.Action_Group}"
+                    ToolTipService.ToolTip="{x:Bind strings:Resources.Grouping_ButtonTooltip}">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF168;" />
+                    </AppBarButton.Icon>
+                    <AppBarButton.Flyout>
+                        <MenuFlyout Placement="BottomEdgeAlignedRight">
+                            <RadioMenuFlyoutItem
+                                x:Name="GroupByTypeMenuItem"
+                                Command="{x:Bind ViewModel.SetGroupingModeCommand}"
+                                CommandParameter="{x:Bind models:GroupingMode.ByServiceType}"
+                                GroupName="GroupingModeRadioGroup"
+                                IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsGroupingMode(ViewModel.Grouping, models:GroupingMode.ByServiceType), Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Grouping_ByType}">
+                                <RadioMenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Protocol}" />
+                                </RadioMenuFlyoutItem.Icon>
+                            </RadioMenuFlyoutItem>
+                            <RadioMenuFlyoutItem
+                                x:Name="GroupByHostMenuItem"
+                                Command="{x:Bind ViewModel.SetGroupingModeCommand}"
+                                CommandParameter="{x:Bind models:GroupingMode.ByHost}"
+                                GroupName="GroupingModeRadioGroup"
+                                IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsGroupingMode(ViewModel.Grouping, models:GroupingMode.ByHost), Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Grouping_ByHost}">
+                                <RadioMenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ServerHost}" />
+                                </RadioMenuFlyoutItem.Icon>
+                            </RadioMenuFlyoutItem>
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+
+                <AppBarButton
+                    x:Name="SortAppBarButton"
+                    Icon="Sort"
+                    Label="{x:Bind strings:Resources.Action_Sort}"
+                    ToolTipService.ToolTip="{x:Bind strings:Resources.Sort_ButtonTooltip}">
+                    <AppBarButton.Flyout>
+                        <MenuFlyout Placement="BottomEdgeAlignedRight">
+                            <RadioMenuFlyoutItem
+                                x:Name="SortByNameMenuItem"
+                                Command="{x:Bind ViewModel.SetSortModeCommand}"
+                                CommandParameter="{x:Bind models:ServiceSortMode.Name}"
+                                GroupName="SortPropertyRadioGroup"
+                                IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsSortMode(ViewModel.SortMode, models:ServiceSortMode.Name), Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Sort_ByName}" />
+                            <RadioMenuFlyoutItem
+                                x:Name="SortByAddressMenuItem"
+                                Command="{x:Bind ViewModel.SetSortModeCommand}"
+                                CommandParameter="{x:Bind models:ServiceSortMode.IpAddress}"
+                                GroupName="SortPropertyRadioGroup"
+                                IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsSortMode(ViewModel.SortMode, models:ServiceSortMode.IpAddress), Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Sort_ByAddress}" />
+                            <RadioMenuFlyoutItem
+                                x:Name="SortByPortMenuItem"
+                                Command="{x:Bind ViewModel.SetSortModeCommand}"
+                                CommandParameter="{x:Bind models:ServiceSortMode.Port}"
+                                GroupName="SortPropertyRadioGroup"
+                                IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsSortMode(ViewModel.SortMode, models:ServiceSortMode.Port), Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Sort_ByPort}" />
+                            <RadioMenuFlyoutItem
+                                x:Name="SortByRecentMenuItem"
+                                Command="{x:Bind ViewModel.SetSortModeCommand}"
+                                CommandParameter="{x:Bind models:ServiceSortMode.RecentlyDiscovered}"
+                                GroupName="SortPropertyRadioGroup"
+                                IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsSortMode(ViewModel.SortMode, models:ServiceSortMode.RecentlyDiscovered), Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Sort_ByRecent}" />
+                            <MenuFlyoutSeparator />
+                            <RadioMenuFlyoutItem
+                                x:Name="SortAscendingMenuItem"
+                                Command="{x:Bind ViewModel.SortAscendingCommand}"
+                                GroupName="SortDirectionRadioGroup"
+                                IsChecked="{x:Bind helpers:ServiceDisplayFormatter.Not(ViewModel.IsSortDescending), Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Sort_Ascending}">
+                                <RadioMenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.SortAscending}" />
+                                </RadioMenuFlyoutItem.Icon>
+                            </RadioMenuFlyoutItem>
+                            <RadioMenuFlyoutItem
+                                x:Name="SortDescendingMenuItem"
+                                Command="{x:Bind ViewModel.SortDescendingCommand}"
+                                GroupName="SortDirectionRadioGroup"
+                                IsChecked="{x:Bind ViewModel.IsSortDescending, Mode=OneWay}"
+                                Text="{x:Bind strings:Resources.Sort_Descending}">
+                                <RadioMenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.SortDescending}" />
+                                </RadioMenuFlyoutItem.Icon>
+                            </RadioMenuFlyoutItem>
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Border>
+</UserControl>
