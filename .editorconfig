@@ -1,0 +1,198 @@
+# EditorConfig for mDiscover (.NET 10 / C# 13+ / WinUI 3)
+# Aligned with dotnet/runtime & dotnet/roslyn standard repository structure
+root = true
+
+#### Core EditorConfig Options ####
+
+# All files
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# XML / RESW / Project / Config files
+[*.{xml,resw,props,targets,csproj,slnx,config}]
+indent_size = 2
+
+# Markdown / JSON files
+[*.{md,json}]
+indent_size = 2
+
+#### C# Code Style Rules ####
+
+[*.cs]
+
+# Var preferences
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+
+# Expression-bodied members
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_constructors = when_on_single_line:suggestion
+csharp_style_expression_bodied_operators = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+csharp_style_expression_bodied_local_functions = when_on_single_line:suggestion
+
+# Pattern matching
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_prefer_pattern_matching = true:suggestion
+csharp_style_prefer_switch_expression = true:suggestion
+
+# Null checking preferences
+csharp_style_throw_expression = true:suggestion
+csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_null_propagation = true:suggestion
+
+# Code structure & modern language features
+csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_prefer_simple_using_statement = true:warning
+csharp_style_prefer_range_operator = true:suggestion
+csharp_style_prefer_index_operator = true:suggestion
+csharp_style_prefer_null_check_over_type_check = true:suggestion
+csharp_style_inlined_variable_declaration = true:suggestion
+csharp_style_prefer_tuple_swap = true:suggestion
+csharp_style_prefer_readonly_struct = true:suggestion
+csharp_style_prefer_readonly_struct_member = true:suggestion
+
+#### C# Formatting Rules ####
+
+# Single-line return formatting preference:
+# "if (true)" on one line, "return;" on the next line
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# New line preferences
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# Indentation preferences
+csharp_indent_braces = false
+csharp_indent_switch_labels = true
+csharp_indent_labels = one_less_than_current
+
+# Space preferences
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_between_parentheses = false
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_after_semicolon_in_for_statement = true
+
+#### Naming Styles ####
+
+# Interfaces: IPascalCase
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = warning
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = *
+
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+# Type parameters: TPascalCase
+dotnet_naming_rule.type_parameter_should_begin_with_t.severity = suggestion
+dotnet_naming_rule.type_parameter_should_begin_with_t.symbols = type_parameter
+dotnet_naming_rule.type_parameter_should_begin_with_t.style = begins_with_t
+
+dotnet_naming_symbols.type_parameter.applicable_kinds = type_parameter
+dotnet_naming_symbols.type_parameter.applicable_accessibilities = *
+
+dotnet_naming_style.begins_with_t.required_prefix = T
+dotnet_naming_style.begins_with_t.capitalization = pascal_case
+
+# Types: PascalCase
+dotnet_naming_rule.types_should_be_pascal_case.severity = warning
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_symbols.types.applicable_kinds = class, struct, enum, delegate
+dotnet_naming_symbols.types.applicable_accessibilities = *
+
+# Methods, Properties, Events: PascalCase
+dotnet_naming_rule.members_should_be_pascal_case.severity = warning
+dotnet_naming_rule.members_should_be_pascal_case.symbols = members
+dotnet_naming_rule.members_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_symbols.members.applicable_kinds = method, property, event
+dotnet_naming_symbols.members.applicable_accessibilities = *
+
+# Parameters, locals, local functions: camelCase
+dotnet_naming_rule.parameters_and_locals_should_be_camel_case.severity = suggestion
+dotnet_naming_rule.parameters_and_locals_should_be_camel_case.symbols = parameters_and_locals
+dotnet_naming_rule.parameters_and_locals_should_be_camel_case.style = camel_case
+
+dotnet_naming_symbols.parameters_and_locals.applicable_kinds = parameter, local, local_function
+dotnet_naming_symbols.parameters_and_locals.applicable_accessibilities = *
+
+# Constants: PascalCase
+dotnet_naming_rule.constant_fields_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols = constant_fields
+dotnet_naming_rule.constant_fields_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_symbols.constant_fields.applicable_kinds = field
+dotnet_naming_symbols.constant_fields.required_modifiers = const
+dotnet_naming_symbols.constant_fields.applicable_accessibilities = *
+
+# All Private and Internal Fields (both static and instance): _camelCase (NO s_ or t_ prefixes)
+dotnet_naming_rule.non_public_fields_should_be_camel_case_with_underscore.severity = warning
+dotnet_naming_rule.non_public_fields_should_be_camel_case_with_underscore.symbols = non_public_fields
+dotnet_naming_rule.non_public_fields_should_be_camel_case_with_underscore.style = camel_case_with_underscore
+
+dotnet_naming_symbols.non_public_fields.applicable_kinds = field
+dotnet_naming_symbols.non_public_fields.applicable_accessibilities = private, internal, protected, private_protected
+
+# Common capitalization styles
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_naming_style.camel_case.capitalization = camel_case
+
+dotnet_naming_style.camel_case_with_underscore.required_prefix = _
+dotnet_naming_style.camel_case_with_underscore.capitalization = camel_case
+
+#### Diagnostic Configuration ####
+
+# Enforce IDE1006 in build
+dotnet_diagnostic.IDE1006.severity = warning
+
+# Unused code & code quality
+dotnet_diagnostic.IDE0005.severity = warning    # Using directive is unnecessary
+dotnet_diagnostic.IDE0051.severity = suggestion # Remove unused private members (preserves XAML event handlers)
+dotnet_diagnostic.IDE0052.severity = suggestion # Remove unread private members
+dotnet_diagnostic.IDE0059.severity = warning    # Unnecessary assignment of a value
+dotnet_diagnostic.IDE0060.severity = suggestion # Remove unused parameter
+
+# Code analysis suppressions / fine-tuning for desktop app
+dotnet_diagnostic.CA1305.severity = none        # Specify IFormatProvider
+dotnet_diagnostic.CA1304.severity = none        # Specify CultureInfo
+dotnet_diagnostic.CA1311.severity = none        # Specify CultureInfo
+dotnet_diagnostic.CA1707.severity = none        # Remove underscores from names
+dotnet_diagnostic.CA1848.severity = none        # Use LoggerMessage delegates
+dotnet_diagnostic.CA1873.severity = none        # Evaluation of argument in logging
+dotnet_diagnostic.CA1725.severity = suggestion  # Parameter names match interface
+dotnet_diagnostic.CA1822.severity = suggestion  # Member can be made static
+dotnet_diagnostic.CA1861.severity = suggestion  # Constant array arguments
+dotnet_diagnostic.CA1859.severity = suggestion  # Use concrete types
+dotnet_diagnostic.CA2007.severity = none        # ConfigureAwait
+
+#### Generated Files ####
+[**/{Generated,intermediatexaml,ReswPlus.SourceGenerator,CsWin32}/**]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.IDE0161.severity = none

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & validate (${{ matrix.platform }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ x64, ARM64 ]
+        configuration: [ Release ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore mDiscover.slnx -p:Platform=${{ matrix.platform }} -p:Configuration=${{ matrix.configuration }}
+
+      - name: Run unit tests
+        if: matrix.platform == 'x64'
+        run: dotnet test mDiscover.Tests/mDiscover.Tests.csproj -c ${{ matrix.configuration }} -p:Platform=x64
+
+      - name: Build MSIX package (validates NativeAOT compilation)
+        run: |
+          dotnet build mDiscover/mDiscover.csproj `
+            -c ${{ matrix.configuration }} `
+            -p:Platform=${{ matrix.platform }} `
+            -p:UnsignedPackage=true `
+            -p:AppxBundle=Never `
+            -p:UapAppxPackageBuildMode=SideloadOnly `
+            -p:GenerateAppxPackageOnBuild=true `
+            -p:AppxPackageDir="${{ github.workspace }}\AppxPackages\" `
+            --verbosity minimal

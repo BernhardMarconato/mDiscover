@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application
+    x:Class="mDiscover.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:mDiscover.Views.Controls"
+    xmlns:helpers="using:mDiscover.Helpers"
+    xmlns:labs="using:CommunityToolkit.WinUI.Controls">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="ms-appx:///Styles/ShimmerStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+
+
+            <helpers:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
+            <helpers:BoolToVisibilityConverter x:Key="InverseBoolToVisConverter" Invert="True" />
+            <helpers:NullToVisibilityConverter x:Key="NullToVisConverter" />
+            <helpers:NullToVisibilityConverter x:Key="InverseNullToVisConverter" Invert="True" />
+            <helpers:CountToVisibilityConverter x:Key="CountToVisConverter" />
+            <helpers:CountToVisibilityConverter x:Key="InverseCountToVisConverter" Invert="True" />
+            <helpers:ExportFormatToTooltipConverter x:Key="ExportFormatToTooltipConverter" />
+            <helpers:ServiceTypeToGlyphConverter x:Key="ServiceTypeToGlyphConverter" />
+            <helpers:ServiceCategoryToLocalizedStringConverter x:Key="ServiceCategoryToLocalizedStringConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

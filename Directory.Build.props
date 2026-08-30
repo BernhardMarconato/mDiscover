@@ -1,0 +1,45 @@
+<Project>
+	<PropertyGroup>
+		<Product>mDiscover</Product>
+		<Authors>Bernhard Marconato</Authors>
+		<Company>BurnArc</Company>
+		<Copyright>Copyright © 2026 BurnArc (Bernhard Marconato)</Copyright>
+		<Description>A native WinUI 3 tool to discover, inspect, and debug Bonjour and DNS-SD services on your local network.</Description>
+		<PackageProjectUrl>https://github.com/BernhardMarconato/mDiscover</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/BernhardMarconato/mDiscover</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Version>1.0.0</Version>
+
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>preview</LangVersion>
+		<Platforms>x86;x64;ARM64</Platforms>
+		<TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
+		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' and '$(Platform)' != '' and '$(Platform)' != 'AnyCPU'">win-$(Platform.ToLower())</RuntimeIdentifier>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+
+		<IsAotCompatible>true</IsAotCompatible>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<CsWin32RunAsBuildTask>true</CsWin32RunAsBuildTask>
+		<CsWinRTAotOptimizerEnabled>Auto</CsWinRTAotOptimizerEnabled>
+    <CsWinRTWindowsMetadata>sdk</CsWinRTWindowsMetadata>
+
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+
+		<!-- Suppress missing XML comment warning on non-public APIs and ReswPlus generated properties -->
+		<NoWarn>$(NoWarn);CS1591;CS8618;CS1570</NoWarn>
+		<WarningsNotAsErrors>$(WarningsNotAsErrors);CS8618;CS1591;CS1570</WarningsNotAsErrors>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.3.1" />
+	</ItemGroup>
+</Project>
