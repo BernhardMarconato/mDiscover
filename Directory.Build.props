@@ -10,7 +10,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<NeutralLanguage>en-US</NeutralLanguage>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
