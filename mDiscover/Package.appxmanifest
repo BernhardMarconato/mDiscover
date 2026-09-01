@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap uap3 desktop rescap">
-  <Identity Name="BurnArc.mDiscover" Publisher="CN=365425C7-8B0C-4AD9-A2E3-1BC707E1EEC8" Version="1.0.0.0" />
+  <Identity Name="BurnArc.mDiscover" Publisher="CN=365425C7-8B0C-4AD9-A2E3-1BC707E1EEC8" Version="1.0.1.0" />
   <mp:PhoneIdentity PhoneProductId="545f0b43-b6fe-4485-bd13-67fb61df9d77" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ms-resource:App_Title</DisplayName>
