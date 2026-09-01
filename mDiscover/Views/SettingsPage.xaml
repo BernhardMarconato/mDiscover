@@ -145,7 +145,8 @@
                     <controls:SettingsExpander
                         Description="{x:Bind strings:Resources.Settings_CustomServicesDescription}"
                         Header="{x:Bind strings:Resources.Settings_CustomServicesCard}"
-                        IsExpanded="True">
+                        IsExpanded="True"
+                        ItemsSource="{x:Bind ViewModel.Settings.CustomServiceTypes}">
                         <controls:SettingsExpander.HeaderIcon>
                             <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.DeveloperCode}" />
                         </controls:SettingsExpander.HeaderIcon>
@@ -164,7 +165,7 @@
                             </Button>
                         </controls:SettingsExpander.Content>
 
-                        <controls:SettingsExpander.Items>
+                        <controls:SettingsExpander.ItemsHeader>
                             <!--  Add Custom Service Card  -->
                             <controls:SettingsCard Description="{x:Bind strings:Resources.Settings_AddCustomServiceDescription}" Header="{x:Bind strings:Resources.Settings_AddCustomServiceCard}">
                                 <controls:SettingsCard.HeaderIcon>
@@ -182,41 +183,34 @@
                                         Style="{ThemeResource AccentButtonStyle}" />
                                 </StackPanel>
                             </controls:SettingsCard>
+                        </controls:SettingsExpander.ItemsHeader>
 
-                            <!--  Custom Items List (MaxHeight 240, visible when custom types exist)  -->
-                            <ItemsView
-                                MaxHeight="240"
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{x:Bind ViewModel.Settings.CustomServiceTypes}"
-                                SelectionMode="None"
-                                Visibility="{x:Bind ViewModel.Settings.CustomServiceTypes.Count, Mode=OneWay, Converter={StaticResource CountToVisConverter}}">
-                                <ItemsView.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:ServiceTypeConfigViewModel">
-                                        <ItemContainer HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                                            <controls:SettingsCard
-                                                HorizontalAlignment="Stretch"
-                                                Description="{x:Bind ServiceType}"
-                                                Header="{x:Bind DisplayName}">
-                                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                                    <ToggleSwitch IsOn="{x:Bind IsEnabled, Mode=TwoWay}" />
-                                                    <Button
-                                                        Padding="8,6"
-                                                        VerticalAlignment="Center"
-                                                        Command="{x:Bind RemoveCommand}"
-                                                        ToolTipService.ToolTip="{x:Bind strings:Resources.Settings_DeleteCustomTypeTooltip}">
-                                                        <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.Delete}" />
-                                                    </Button>
-                                                </StackPanel>
-                                            </controls:SettingsCard>
-                                        </ItemContainer>
-                                    </DataTemplate>
-                                </ItemsView.ItemTemplate>
-                            </ItemsView>
-                        </controls:SettingsExpander.Items>
+                        <controls:SettingsExpander.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ServiceTypeConfigViewModel">
+                                <controls:SettingsCard
+                                    HorizontalAlignment="Stretch"
+                                    Description="{x:Bind ServiceType}"
+                                    Header="{x:Bind DisplayName}">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <ToggleSwitch IsOn="{x:Bind IsEnabled, Mode=TwoWay}" />
+                                        <Button
+                                            Padding="8,6"
+                                            VerticalAlignment="Center"
+                                            Command="{x:Bind RemoveCommand}"
+                                            ToolTipService.ToolTip="{x:Bind strings:Resources.Settings_DeleteCustomTypeTooltip}">
+                                            <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.Delete}" />
+                                        </Button>
+                                    </StackPanel>
+                                </controls:SettingsCard>
+                            </DataTemplate>
+                        </controls:SettingsExpander.ItemTemplate>
                     </controls:SettingsExpander>
 
                     <!--  Built-in Service Catalog Expander  -->
-                    <controls:SettingsExpander Description="{x:Bind strings:Resources.Settings_BuiltInServicesDescription}" Header="{x:Bind strings:Resources.Settings_BuiltInServicesCard}">
+                    <controls:SettingsExpander
+                        Description="{x:Bind strings:Resources.Settings_BuiltInServicesDescription}"
+                        Header="{x:Bind strings:Resources.Settings_BuiltInServicesCard}"
+                        ItemsSource="{x:Bind ViewModel.Settings.BuiltInServiceTypes}">
                         <controls:SettingsExpander.HeaderIcon>
                             <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Folder}" />
                         </controls:SettingsExpander.HeaderIcon>
@@ -235,27 +229,16 @@
                             </StackPanel>
                         </controls:SettingsExpander.Content>
 
-                        <!--  Virtualized Built-in Items List (MaxHeight 360)  -->
-                        <controls:SettingsExpander.Items>
-                            <ItemsView
-                                MaxHeight="360"
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{x:Bind ViewModel.Settings.BuiltInServiceTypes}"
-                                SelectionMode="None">
-                                <ItemsView.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:ServiceTypeConfigViewModel">
-                                        <ItemContainer HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                                            <controls:SettingsCard
-                                                HorizontalAlignment="Stretch"
-                                                Description="{x:Bind ServiceType}"
-                                                Header="{x:Bind DisplayName}">
-                                                <ToggleSwitch IsOn="{x:Bind IsEnabled, Mode=TwoWay}" />
-                                            </controls:SettingsCard>
-                                        </ItemContainer>
-                                    </DataTemplate>
-                                </ItemsView.ItemTemplate>
-                            </ItemsView>
-                        </controls:SettingsExpander.Items>
+                        <controls:SettingsExpander.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ServiceTypeConfigViewModel">
+                                <controls:SettingsCard
+                                    HorizontalAlignment="Stretch"
+                                    Description="{x:Bind ServiceType}"
+                                    Header="{x:Bind DisplayName}">
+                                    <ToggleSwitch IsOn="{x:Bind IsEnabled, Mode=TwoWay}" />
+                                </controls:SettingsCard>
+                            </DataTemplate>
+                        </controls:SettingsExpander.ItemTemplate>
                     </controls:SettingsExpander>
                 </StackPanel>
 
