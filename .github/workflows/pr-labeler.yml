@@ -1,0 +1,41 @@
+name: Auto Label PR
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label based on PR title prefix
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.pull_request.title.toLowerCase();
+            const labelsToAdd = [];
+            if (title.startsWith('fix') || title.startsWith('bug')) {
+              labelsToAdd.push('fix');
+            } else if (title.startsWith('feat')) {
+              labelsToAdd.push('feat');
+            } else if (title.startsWith('chore') || title.startsWith('dependencies')) {
+              labelsToAdd.push('chore');
+            } else if (title.startsWith('docs')) {
+              labelsToAdd.push('docs');
+            } else if (title.startsWith('refactor')) {
+              labelsToAdd.push('refactor');
+            } else if (title.startsWith('build') || title.startsWith('ci')) {
+              labelsToAdd.push('build');
+            }
+
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labelsToAdd
+              });
+            }
