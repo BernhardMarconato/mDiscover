@@ -50,13 +50,23 @@
 
 	<ItemGroup>
 		<Manifest Include="$(ApplicationManifest)" />
-		<AppxManifest Include="Package.Debug.appxmanifest" Condition="'$(Configuration)' == 'Debug'">
+		<!-- Debug: developer-signed identity -->
+		<AppxManifest Include="Package.Debug.appxmanifest" Condition="'$(Configuration)' == 'Debug' and '$(UnsignedPackage)' != 'true'">
 			<SubType>Designer</SubType>
 		</AppxManifest>
-		<AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)' != 'Debug'">
+		<!-- Unsigned: special OID identity, no certificate required (Windows 11+) -->
+		<AppxManifest Include="Package.Unsigned.appxmanifest" Condition="'$(UnsignedPackage)' == 'true'">
+			<SubType>Designer</SubType>
+		</AppxManifest>
+		<!-- Release: Store-signed identity -->
+		<AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)' != 'Debug' and '$(UnsignedPackage)' != 'true'">
 			<SubType>Designer</SubType>
 		</AppxManifest>
 	</ItemGroup>
+
+	<PropertyGroup Condition="'$(UnsignedPackage)' == 'true'">
+		<AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+	</PropertyGroup>
 
 	<!-- Target to automatically synchronize the MSIX Identity Version with $(Version) -->
 	<Target Name="SyncPackageAppxManifestVersion" BeforeTargets="BeforeGenerateAppxPackageRecipe;BeforeBuild" Condition="'$(EnableMsixTooling)' == 'true'">
