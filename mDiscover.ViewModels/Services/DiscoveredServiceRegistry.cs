@@ -43,6 +43,9 @@ public partial class DiscoveredServiceRegistry : ObservableObject, IDisposable
     public partial bool HasDiscoveredItems { get; private set; }
 
     [ObservableProperty]
+    public partial bool HasAnyDiscoveredServices { get; private set; }
+
+    [ObservableProperty]
     public partial bool IsInitialDiscoveryLoading { get; private set; }
 
     [ObservableProperty]
@@ -183,6 +186,7 @@ public partial class DiscoveredServiceRegistry : ObservableObject, IDisposable
 
     private void UpdateEmptyAndLoadingStates()
     {
+        HasAnyDiscoveredServices = !_servicesMap.IsEmpty;
         HasDiscoveredItems = FilteredServices.Count > 0;
         IsInitialDiscoveryLoading = FilteredServices.Count == 0 && _servicesMap.IsEmpty && _isDiscovering;
         IsNoSearchResults = FilteredServices.Count == 0 && !IsInitialDiscoveryLoading;

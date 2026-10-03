@@ -54,9 +54,23 @@ public class ServiceLostEventArgs(string serviceId) : EventArgs
 /// Initializes a new instance of the <see cref="DiscoveryStateChangedEventArgs"/> class.
 /// </remarks>
 /// <param name="newState">The new discovery state.</param>
-/// <param name="statusMessage">Optional status message or error details.</param>
-public class DiscoveryStateChangedEventArgs(DiscoveryState newState, string? statusMessage = null) : EventArgs
+/// <param name="statusMessage">Optional status message or diagnostic error details.</param>
+/// <param name="errorInfo">Optional structured error information for localization.</param>
+public class DiscoveryStateChangedEventArgs(
+    DiscoveryState newState,
+    string? statusMessage = null,
+    DiscoveryErrorInfo? errorInfo = null) : EventArgs
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DiscoveryStateChangedEventArgs"/> class with structured error info.
+    /// </summary>
+    /// <param name="newState">The new discovery state.</param>
+    /// <param name="errorInfo">Structured error information for localization.</param>
+    public DiscoveryStateChangedEventArgs(DiscoveryState newState, DiscoveryErrorInfo errorInfo)
+        : this(newState, errorInfo.Details, errorInfo)
+    {
+    }
+
     /// <summary>
     /// Gets the new discovery lifecycle state.
     /// </summary>
@@ -66,5 +80,9 @@ public class DiscoveryStateChangedEventArgs(DiscoveryState newState, string? sta
     /// Gets an optional human-readable status message or error details.
     /// </summary>
     public string? StatusMessage { get; } = statusMessage;
-}
 
+    /// <summary>
+    /// Gets optional structured error information for localization.
+    /// </summary>
+    public DiscoveryErrorInfo? ErrorInfo { get; } = errorInfo;
+}

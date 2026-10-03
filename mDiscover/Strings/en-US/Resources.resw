@@ -253,10 +253,25 @@
     <value>Listening for multicast DNS-SD broadcasts on local subnet…</value>
   </data>
   <data name="Discovery_NoResultsTitle" xml:space="preserve">
-    <value>No instances found</value>
+    <value>No matching instances</value>
   </data>
   <data name="Discovery_NoResultsSubtitle" xml:space="preserve">
     <value>No service instances match your current search query or filter.</value>
+  </data>
+  <data name="Discovery_ZeroInstancesTitle" xml:space="preserve">
+    <value>No instances discovered</value>
+  </data>
+  <data name="Discovery_ZeroInstancesSubtitle" xml:space="preserve">
+    <value>No Bonjour or DNS-SD services were detected on your local network.</value>
+  </data>
+  <data name="Discovery_ClearFilterAction" xml:space="preserve">
+    <value>Clear filter</value>
+  </data>
+  <data name="Discovery_ErrorTitle" xml:space="preserve">
+    <value>Discovery failed</value>
+  </data>
+  <data name="Discovery_ErrorOpenSettings" xml:space="preserve">
+    <value>Open settings</value>
   </data>
 
   <!-- Settings Page -->
@@ -487,6 +502,23 @@ THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITH
   </data>
   <data name="ResolutionError_Generic" xml:space="preserve">
     <value>Could not resolve network endpoint or host IP.</value>
+  </data>
+
+  <!-- Discovery Errors -->
+  <data name="DiscoveryError_MdnsDisabled" xml:space="preserve">
+    <value>{0}: Windows mDNS is disabled in the system registry (HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\EnableMDNS is set to 0). The Windows DNS service cannot discover local network services.</value>
+    <comment>#Format[String provider]</comment>
+  </data>
+  <data name="DiscoveryError_MdnsDisabledWithHr" xml:space="preserve">
+    <value>{0}: Windows mDNS is disabled in the system registry (HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\EnableMDNS is set to 0). The Windows DNS service cannot discover local network services (HRESULT: {1}).</value>
+    <comment>#Format[String provider, String hresult]</comment>
+  </data>
+  <data name="DiscoveryError_QueryFailed" xml:space="preserve">
+    <value>{0} failed: {1}</value>
+    <comment>#Format[String provider, String details]</comment>
+  </data>
+  <data name="DiscoveryError_Generic" xml:space="preserve">
+    <value>Service discovery failed.</value>
   </data>
 
   <!-- Providers -->

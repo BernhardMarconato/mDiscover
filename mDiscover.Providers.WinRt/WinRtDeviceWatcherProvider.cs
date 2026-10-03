@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Windows.Devices.Enumeration;
 using mDiscover.Core.Common;
 using mDiscover.Core.Extensions;
+using mDiscover.Core.Helpers;
 using mDiscover.Core.Interfaces;
 using mDiscover.Core.Models;
 using mDiscover.Core.Services;
@@ -30,18 +31,22 @@ public class WinRtDeviceWatcherProvider(TimeProvider? timeProvider = null, ILogg
     private readonly TimeProvider _timeProvider = timeProvider ?? TimeProvider.System;
     private readonly ILogger<WinRtDeviceWatcherProvider> _logger = logger ?? NullLogger<WinRtDeviceWatcherProvider>.Instance;
 
+    private DiscoveryState _state = DiscoveryState.Idle;
+
     public DiscoveryState State
     {
-        get;
-        private set
+        get => _state;
+        private set => SetState(value);
+    }
+
+    private void SetState(DiscoveryState newState, string? statusMessage = null, DiscoveryErrorInfo? errorInfo = null)
+    {
+        if (_state != newState || statusMessage != null || errorInfo != null)
         {
-            if (field != value)
-            {
-                field = value;
-                StateChanged?.Invoke(this, new DiscoveryStateChangedEventArgs(value));
-            }
+            _state = newState;
+            StateChanged?.Invoke(this, new DiscoveryStateChangedEventArgs(newState, statusMessage, errorInfo));
         }
-    } = DiscoveryState.Idle;
+    }
 
     public event EventHandler<IDnsSdDiscoveryProvider, ServiceDiscoveredEventArgs>? ServiceDiscovered;
 
@@ -76,6 +81,18 @@ public class WinRtDeviceWatcherProvider(TimeProvider? timeProvider = null, ILogg
             lock (_lock)
             {
                 _discoveredServices.Clear();
+
+                if (DnsCacheRegistryHelper.IsMdnsDisabledInRegistry())
+                {
+                    const string msg = "WinRT DeviceWatcher: Windows mDNS is disabled in system registry.";
+                    var errorInfo = new DiscoveryErrorInfo(
+                        DiscoveryFailureReason.MdnsDisabledInRegistry,
+                        ProviderId: "winrt");
+                    _logger.LogError("{Message}", msg);
+                    SetState(DiscoveryState.Error, msg, errorInfo);
+                    throw new InvalidOperationException(msg);
+                }
+
                 State = DiscoveryState.Discovering;
 
                 var scanTypes = options.TargetServiceTypes != null && options.TargetServiceTypes.Count > 0
@@ -113,7 +130,12 @@ public class WinRtDeviceWatcherProvider(TimeProvider? timeProvider = null, ILogg
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Failed to start DNS-SD DeviceWatcher");
-                    State = DiscoveryState.Error;
+                    var errorInfo = new DiscoveryErrorInfo(
+                        DiscoveryFailureReason.QueryFailed,
+                        ProviderId: "winrt",
+                        Details: ex.Message,
+                        HResult: ex.HResult);
+                    SetState(DiscoveryState.Error, ex.Message, errorInfo);
                     throw;
                 }
             }
