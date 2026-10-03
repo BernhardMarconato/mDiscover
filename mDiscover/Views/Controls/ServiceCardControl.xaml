@@ -27,7 +27,7 @@
                     CommandParameter="{x:Bind models:ExportFormat.Text}"
                     Text="{x:Bind strings:Resources.Copy_AsText}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportText}" />
+                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.List}" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
                 <MenuFlyoutItem
@@ -35,7 +35,7 @@
                     CommandParameter="{x:Bind models:ExportFormat.Markdown}"
                     Text="{x:Bind strings:Resources.Copy_AsMarkdown}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportMarkdown}" />
+                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.BulletedList}" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
                 <MenuFlyoutItem
@@ -43,7 +43,7 @@
                     CommandParameter="{x:Bind models:ExportFormat.Csv}"
                     Text="{x:Bind strings:Resources.Copy_AsCsv}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportCsv}" />
+                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Tag}" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
                 <MenuFlyoutItem
@@ -51,7 +51,7 @@
                     CommandParameter="{x:Bind models:ExportFormat.Json}"
                     Text="{x:Bind strings:Resources.Copy_AsJson}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportJson}" />
+                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Code}" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
             </MenuFlyout>
