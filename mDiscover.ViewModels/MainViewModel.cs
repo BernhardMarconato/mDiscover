@@ -90,7 +90,36 @@ public partial class MainViewModel : ObservableObject, IDisposable
     partial void OnDiscoveryStateChanged(DiscoveryState value) => _registry.SetDiscoveringState(IsDiscovering || value == DiscoveryState.Discovering);
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasStatusError))]
+    [NotifyPropertyChangedFor(nameof(HasNoFilteredResults))]
     public partial string? StatusError { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasStatusError))]
+    [NotifyPropertyChangedFor(nameof(HasNoFilteredResults))]
+    public partial DiscoveryErrorInfo? StatusErrorInfo { get; set; }
+
+    public bool HasStatusError => StatusErrorInfo != null || !string.IsNullOrWhiteSpace(StatusError);
+
+    public bool HasAnyDiscoveredServices => _registry.HasAnyDiscoveredServices;
+
+    public bool HasZeroInstances => !HasAnyDiscoveredServices && !IsInitialDiscoveryLoading;
+
+    public bool HasNoFilteredResults => HasAnyDiscoveredServices && IsNoSearchResults && !HasStatusError;
+
+    [RelayCommand]
+    public void ClearFilter()
+    {
+        SearchText = string.Empty;
+        SelectedCategory = null;
+    }
+
+    [RelayCommand]
+    public void DismissStatusError()
+    {
+        StatusError = null;
+        StatusErrorInfo = null;
+    }
 
     [ObservableProperty]
     public partial ServiceSortMode SortMode { get; set; } = ServiceSortMode.Name;
@@ -133,7 +162,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
         _registry.PropertyChanged += (s, e) =>
         {
             if (e.PropertyName != null)
+            {
                 OnPropertyChanged(e.PropertyName);
+                if (e.PropertyName == nameof(DiscoveredServiceRegistry.IsNoSearchResults) ||
+                    e.PropertyName == nameof(DiscoveredServiceRegistry.HasAnyDiscoveredServices) ||
+                    e.PropertyName == nameof(DiscoveredServiceRegistry.IsInitialDiscoveryLoading))
+                {
+                    OnPropertyChanged(nameof(HasNoFilteredResults));
+                    OnPropertyChanged(nameof(HasZeroInstances));
+                }
+            }
         };
 
         SortMode = _settingsService.ReadSetting(SettingDefinitions.SortMode);
@@ -240,6 +278,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public async Task RefreshDiscoveryAsync()
     {
+        StatusError = null;
+        StatusErrorInfo = null;
         _registry.Clear();
         SelectedService = null;
 
@@ -250,6 +290,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [RelayCommand]
     public async Task RestartDiscoveryAsync()
     {
+        StatusError = null;
+        StatusErrorInfo = null;
         await StopDiscoveryAsync();
         await StartDiscoveryAsync();
     }
@@ -260,6 +302,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             IsDiscovering = e.NewState == DiscoveryState.Discovering;
             DiscoveryState = e.NewState;
+            if (e.NewState == DiscoveryState.Error)
+            {
+                StatusError = e.StatusMessage;
+                StatusErrorInfo = e.ErrorInfo;
+            }
+            else if (e.NewState == DiscoveryState.Discovering)
+            {
+                StatusError = null;
+                StatusErrorInfo = null;
+            }
         });
     }
 

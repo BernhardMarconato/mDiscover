@@ -71,3 +71,44 @@ public class DiscoveryOptions
 /// <param name="HostsCount">The count of distinct host machines represented.</param>
 public record DiscoveryStats(int ServicesCount = 0, int TypesCount = 0, int HostsCount = 0);
 
+/// <summary>
+/// Specifies the failure reason for discovery operations.
+/// </summary>
+public enum DiscoveryFailureReason
+{
+    /// <summary>
+    /// No discovery error occurred.
+    /// </summary>
+    None,
+
+    /// <summary>
+    /// Windows mDNS service is disabled in the system registry (EnableMDNS is 0).
+    /// </summary>
+    MdnsDisabledInRegistry,
+
+    /// <summary>
+    /// The provider query or browse operation failed.
+    /// </summary>
+    QueryFailed,
+
+    /// <summary>
+    /// General or unexpected discovery error.
+    /// </summary>
+    GeneralError
+}
+
+/// <summary>
+/// Encapsulates structured diagnostic error details for discovery failures to enable proper localization in the UI.
+/// </summary>
+/// <param name="Reason">The categorized reason for the failure.</param>
+/// <param name="ProviderId">The identifier of the active discovery provider (e.g. "win32", "winrt").</param>
+/// <param name="ServiceType">Optional targeted service type that failed.</param>
+/// <param name="HResult">Optional Win32 or COM HRESULT error code.</param>
+/// <param name="Details">Optional unlocalized diagnostic details or exception message.</param>
+public record DiscoveryErrorInfo(
+    DiscoveryFailureReason Reason,
+    string? ProviderId = null,
+    string? ServiceType = null,
+    int? HResult = null,
+    string? Details = null);
+

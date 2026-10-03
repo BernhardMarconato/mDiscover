@@ -166,5 +166,132 @@ public class MainViewModelTests
         Assert.NotNull(vm.SelectedService);
         Assert.Same(target, vm.SelectedService);
     }
+
+    [Fact]
+    public void EngineStateChanged_ToError_UpdatesStatusErrorAndHasStatusError()
+    {
+        var vm = CreateViewModel();
+        const string errorMsg = "Win32 DnsServiceBrowse failed: mDNS disabled (0x800704C6)";
+
+        _engine.StateChanged += Raise.Event<EventHandler<IDnsSdDiscoveryProvider, DiscoveryStateChangedEventArgs>>(
+            _provider,
+            new DiscoveryStateChangedEventArgs(DiscoveryState.Error, errorMsg));
+
+        Assert.Equal(DiscoveryState.Error, vm.DiscoveryState);
+        Assert.False(vm.IsDiscovering);
+        Assert.True(vm.HasStatusError);
+        Assert.Equal(errorMsg, vm.StatusError);
+        Assert.False(vm.HasNoFilteredResults);
+    }
+
+    [Fact]
+    public void DismissStatusError_ClearsStatusError()
+    {
+        var vm = CreateViewModel();
+        vm.StatusError = "Some error";
+
+        Assert.True(vm.HasStatusError);
+
+        vm.DismissStatusErrorCommand.Execute(null);
+
+        Assert.Null(vm.StatusError);
+        Assert.False(vm.HasStatusError);
+    }
+
+    [Fact]
+    public async Task StartDiscoveryAsync_ClearsExistingStatusError()
+    {
+        var vm = CreateViewModel();
+        vm.StatusError = "Previous error";
+
+        await vm.StartDiscoveryAsync();
+
+        Assert.Null(vm.StatusError);
+        Assert.False(vm.HasStatusError);
+    }
+
+    [Fact]
+    public void EngineStateChanged_ToError_WithDiscoveryErrorInfo_UpdatesStatusErrorInfoAndHasStatusError()
+    {
+        var vm = CreateViewModel();
+        var errorInfo = new DiscoveryErrorInfo(
+            DiscoveryFailureReason.MdnsDisabledInRegistry,
+            ProviderId: "win32",
+            HResult: unchecked((int)0x800704C6));
+
+        _engine.StateChanged += Raise.Event<EventHandler<IDnsSdDiscoveryProvider, DiscoveryStateChangedEventArgs>>(
+            _provider,
+            new DiscoveryStateChangedEventArgs(DiscoveryState.Error, "Diagnostic message", errorInfo));
+
+        Assert.Equal(DiscoveryState.Error, vm.DiscoveryState);
+        Assert.False(vm.IsDiscovering);
+        Assert.True(vm.HasStatusError);
+        Assert.Equal("Diagnostic message", vm.StatusError);
+        Assert.NotNull(vm.StatusErrorInfo);
+        Assert.Equal(DiscoveryFailureReason.MdnsDisabledInRegistry, vm.StatusErrorInfo.Reason);
+        Assert.Equal("win32", vm.StatusErrorInfo.ProviderId);
+        Assert.Equal(unchecked((int)0x800704C6), vm.StatusErrorInfo.HResult);
+        Assert.False(vm.HasNoFilteredResults);
+    }
+
+    [Fact]
+    public void DismissStatusError_ClearsBothStatusErrorAndStatusErrorInfo()
+    {
+        var vm = CreateViewModel();
+        vm.StatusError = "Some error";
+        vm.StatusErrorInfo = new DiscoveryErrorInfo(DiscoveryFailureReason.GeneralError);
+
+        Assert.True(vm.HasStatusError);
+
+        vm.DismissStatusErrorCommand.Execute(null);
+
+        Assert.Null(vm.StatusError);
+        Assert.Null(vm.StatusErrorInfo);
+        Assert.False(vm.HasStatusError);
+    }
+
+    [Fact]
+    public async Task RefreshDiscoveryAsync_ClearsStatusErrorInfo()
+    {
+        var vm = CreateViewModel();
+        vm.StatusErrorInfo = new DiscoveryErrorInfo(DiscoveryFailureReason.MdnsDisabledInRegistry);
+
+        Assert.True(vm.HasStatusError);
+
+        await vm.RefreshDiscoveryAsync();
+
+        Assert.Null(vm.StatusErrorInfo);
+        Assert.False(vm.HasStatusError);
+    }
+
+    [Fact]
+    public void HasZeroInstances_IsTrue_WhenNoServicesDiscoveredAndNotLoading()
+    {
+        var vm = CreateViewModel();
+
+        Assert.False(vm.HasAnyDiscoveredServices);
+        Assert.False(vm.IsInitialDiscoveryLoading);
+        Assert.False(vm.HasStatusError);
+        Assert.True(vm.HasZeroInstances);
+        Assert.False(vm.HasNoFilteredResults);
+
+        // Even when an error occurs (such as mDNS disabled or query failed), the placeholder state remains true
+        vm.StatusError = "Query failed";
+        Assert.True(vm.HasStatusError);
+        Assert.True(vm.HasZeroInstances);
+    }
+
+    [Fact]
+    public void ClearFilterCommand_ResetsSearchTextAndSelectedCategory()
+    {
+        var vm = CreateViewModel();
+        vm.SearchText = "printer";
+        vm.SelectedCategory = ServiceCategory.PrintAndScan;
+
+        vm.ClearFilterCommand.Execute(null);
+
+        Assert.Equal(string.Empty, vm.SearchText);
+        Assert.Null(vm.SelectedCategory);
+    }
 }
 

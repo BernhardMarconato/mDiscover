@@ -212,6 +212,41 @@ public static class ServiceDisplayFormatter
         return Resources.Provider_Win32;
     }
 
+    public static string FormatDiscoveryError(DiscoveryErrorInfo? errorInfo, string? fallbackMessage = null)
+    {
+        if (errorInfo == null)
+        {
+            return !string.IsNullOrWhiteSpace(fallbackMessage)
+                ? fallbackMessage
+                : Resources.DiscoveryError_Generic;
+        }
+
+        var providerName = GetProviderDisplayName(errorInfo.ProviderId);
+        if (string.IsNullOrWhiteSpace(providerName))
+        {
+            providerName = !string.IsNullOrWhiteSpace(errorInfo.ProviderId)
+                ? errorInfo.ProviderId
+                : Resources.Provider_Win32;
+        }
+
+        var hrHex = errorInfo.HResult.HasValue ? $"0x{errorInfo.HResult.Value:X8}" : null;
+
+        return errorInfo.Reason switch
+        {
+            DiscoveryFailureReason.MdnsDisabledInRegistry => hrHex != null
+                ? Resources.DiscoveryError_MdnsDisabledWithHr(providerName, hrHex)
+                : Resources.DiscoveryError_MdnsDisabled(providerName),
+
+            DiscoveryFailureReason.QueryFailed => !string.IsNullOrWhiteSpace(errorInfo.Details)
+                ? Resources.DiscoveryError_QueryFailed(providerName, errorInfo.Details)
+                : (!string.IsNullOrWhiteSpace(fallbackMessage) ? fallbackMessage : Resources.DiscoveryError_Generic),
+
+            _ => !string.IsNullOrWhiteSpace(errorInfo.Details)
+                ? errorInfo.Details
+                : (!string.IsNullOrWhiteSpace(fallbackMessage) ? fallbackMessage : Resources.DiscoveryError_Generic)
+        };
+    }
+
     public static string FormatGroupTitle(string key, GroupingMode mode)
     {
         if (mode == GroupingMode.ByServiceType)

@@ -4,6 +4,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using mDiscover.Core.Extensions;
+using mDiscover.Core.Helpers;
 using mDiscover.Core.Interfaces;
 using mDiscover.Core.Models;
 using Microsoft.Extensions.Logging;
@@ -27,18 +28,22 @@ public class Win32DnsSdProvider : IDnsSdDiscoveryProvider
     private static ILogger<Win32DnsSdProvider> _logger = NullLogger<Win32DnsSdProvider>.Instance;
     private static Win32DnsSdProvider? _currentInstance;
 
+    private DiscoveryState _state = DiscoveryState.Idle;
+
     public DiscoveryState State
     {
-        get;
-        private set
+        get => _state;
+        private set => SetState(value);
+    }
+
+    private void SetState(DiscoveryState newState, string? statusMessage = null, DiscoveryErrorInfo? errorInfo = null)
+    {
+        if (_state != newState || statusMessage != null || errorInfo != null)
         {
-            if (field != value)
-            {
-                field = value;
-                StateChanged?.Invoke(this, new DiscoveryStateChangedEventArgs(value));
-            }
+            _state = newState;
+            StateChanged?.Invoke(this, new DiscoveryStateChangedEventArgs(newState, statusMessage, errorInfo));
         }
-    } = DiscoveryState.Idle;
+    }
 
     public event EventHandler<IDnsSdDiscoveryProvider, ServiceDiscoveredEventArgs>? ServiceDiscovered;
     public event EventHandler<IDnsSdDiscoveryProvider, ServiceUpdatedEventArgs>? ServiceUpdated;
@@ -130,16 +135,7 @@ public class Win32DnsSdProvider : IDnsSdDiscoveryProvider
             if (dnsStatus != (int)WIN32_ERROR.NO_ERROR && dnsStatus != PInvoke.DNS_REQUEST_PENDING)
             {
                 var hr = PInvoke.HRESULT_FROM_WIN32((WIN32_ERROR)dnsStatus);
-                try
-                {
-                    hr.ThrowOnFailure();
-                }
-                catch (Win32Exception ex)
-                {
-                    _logger.LogWarning(
-                        ex, "DnsServiceResolve for meta-services returned non-pending code: {ErrorCode} (0x{Hr:X8})",
-                         dnsStatus, (uint)hr);
-                }
+                hr.ThrowOnFailure();
             }
             else
             {
@@ -149,6 +145,9 @@ public class Win32DnsSdProvider : IDnsSdDiscoveryProvider
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to start meta-services browse");
+            var (detailedMessage, errorInfo) = CreateBrowseError(ex);
+            SetState(DiscoveryState.Error, detailedMessage, errorInfo);
+            throw new InvalidOperationException(detailedMessage, ex);
         }
     }
 
@@ -182,16 +181,7 @@ public class Win32DnsSdProvider : IDnsSdDiscoveryProvider
             if (dnsStatus != (int)WIN32_ERROR.NO_ERROR && dnsStatus != PInvoke.DNS_REQUEST_PENDING)
             {
                 var hr = PInvoke.HRESULT_FROM_WIN32((WIN32_ERROR)dnsStatus);
-                try
-                {
-                    hr.ThrowOnFailure();
-                }
-                catch (Win32Exception ex)
-                {
-                    _logger.LogWarning(
-                        ex, "DnsServiceResolve for '{ServiceType}' returned non-pending code: {ErrorCode} (0x{Hr:X8})",
-                         serviceType, dnsStatus, (uint)hr);
-                }
+                hr.ThrowOnFailure();
             }
             else
             {
@@ -201,7 +191,37 @@ public class Win32DnsSdProvider : IDnsSdDiscoveryProvider
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to browse service type '{ServiceType}'", cleanType);
+            var (detailedMessage, errorInfo) = CreateBrowseError(ex, cleanType);
+            SetState(DiscoveryState.Error, detailedMessage, errorInfo);
+            throw new InvalidOperationException(detailedMessage, ex);
         }
+    }
+
+    private static (string Message, DiscoveryErrorInfo ErrorInfo) CreateBrowseError(Exception ex, string? serviceType = null)
+    {
+        var hr = ex.HResult;
+        var prefix = string.IsNullOrWhiteSpace(serviceType)
+            ? "Win32 DnsServiceBrowse"
+            : $"Win32 DnsServiceBrowse ('{serviceType}')";
+
+        if (DnsCacheRegistryHelper.IsMdnsDisabledInRegistry())
+        {
+            var errorInfo = new DiscoveryErrorInfo(
+                DiscoveryFailureReason.MdnsDisabledInRegistry,
+                ProviderId: "win32",
+                ServiceType: serviceType,
+                HResult: hr);
+            var hrSuffix = hr != 0 ? $" (HRESULT: 0x{hr:X8})" : string.Empty;
+            return ($"{prefix}: Windows mDNS is disabled in system registry{hrSuffix}.", errorInfo);
+        }
+
+        var generalInfo = new DiscoveryErrorInfo(
+            DiscoveryFailureReason.QueryFailed,
+            ProviderId: "win32",
+            ServiceType: serviceType,
+            HResult: hr,
+            Details: ex.Message);
+        return ($"{prefix} failed: {ex.Message} (HRESULT: 0x{hr:X8})", generalInfo);
     }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)])]
