@@ -89,7 +89,7 @@
                                     CommandParameter="{x:Bind models:ExportFormat.Text}"
                                     Text="{x:Bind strings:Resources.Format_Text}">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportText}" />
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.List}" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem
@@ -98,7 +98,7 @@
                                     CommandParameter="{x:Bind models:ExportFormat.Markdown}"
                                     Text="{x:Bind strings:Resources.Format_Markdown}">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportMarkdown}" />
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.BulletedList}" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem
@@ -107,7 +107,7 @@
                                     CommandParameter="{x:Bind models:ExportFormat.Csv}"
                                     Text="{x:Bind strings:Resources.Format_Csv}">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportCsv}" />
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Tag}" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem
@@ -116,7 +116,7 @@
                                     CommandParameter="{x:Bind models:ExportFormat.Json}"
                                     Text="{x:Bind strings:Resources.Format_Json}">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportJson}" />
+                                        <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Code}" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                             </MenuFlyout>
@@ -143,7 +143,7 @@
                                 IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsGroupingMode(ViewModel.Grouping, models:GroupingMode.ByServiceType), Mode=OneWay}"
                                 Text="{x:Bind strings:Resources.Grouping_ByType}">
                                 <RadioMenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Protocol}" />
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.SquareSparkle}" />
                                 </RadioMenuFlyoutItem.Icon>
                             </RadioMenuFlyoutItem>
                             <RadioMenuFlyoutItem
@@ -154,7 +154,7 @@
                                 IsChecked="{x:Bind helpers:ServiceDisplayFormatter.IsGroupingMode(ViewModel.Grouping, models:GroupingMode.ByHost), Mode=OneWay}"
                                 Text="{x:Bind strings:Resources.Grouping_ByHost}">
                                 <RadioMenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ServerHost}" />
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.TVMonitor}" />
                                 </RadioMenuFlyoutItem.Icon>
                             </RadioMenuFlyoutItem>
                         </MenuFlyout>
@@ -204,7 +204,7 @@
                                 IsChecked="{x:Bind helpers:ServiceDisplayFormatter.Not(ViewModel.IsSortDescending), Mode=OneWay}"
                                 Text="{x:Bind strings:Resources.Sort_Ascending}">
                                 <RadioMenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.SortAscending}" />
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Up}" />
                                 </RadioMenuFlyoutItem.Icon>
                             </RadioMenuFlyoutItem>
                             <RadioMenuFlyoutItem
@@ -214,7 +214,7 @@
                                 IsChecked="{x:Bind ViewModel.IsSortDescending, Mode=OneWay}"
                                 Text="{x:Bind strings:Resources.Sort_Descending}">
                                 <RadioMenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.SortDescending}" />
+                                    <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Down}" />
                                 </RadioMenuFlyoutItem.Icon>
                             </RadioMenuFlyoutItem>
                         </MenuFlyout>

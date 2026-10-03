@@ -134,7 +134,7 @@ public partial class ServiceTypeToGlyphConverter : IValueConverter
         }
         else
         {
-            return FluentGlyphs.Network;
+            return FluentGlyphs.Ethernet;
         }
 
         return ServiceDisplayFormatter.GetCategoryGlyph(category);
@@ -237,30 +237,30 @@ public static class ServiceDisplayFormatter
     {
         return category switch
         {
-            ServiceCategory.WebAndApi => FluentGlyphs.WebGlobe,
-            ServiceCategory.RemoteAccess => FluentGlyphs.RemoteAccess,
-            ServiceCategory.MediaAndAudio => FluentGlyphs.TvSpeaker,
+            ServiceCategory.WebAndApi => FluentGlyphs.Globe,
+            ServiceCategory.RemoteAccess => FluentGlyphs.CommandPrompt,
+            ServiceCategory.MediaAndAudio => FluentGlyphs.Volume,
             ServiceCategory.SmartHomeAndIot => FluentGlyphs.Lightbulb,
-            ServiceCategory.PrintAndScan => FluentGlyphs.Printer,
-            ServiceCategory.StorageAndFiles => FluentGlyphs.Storage,
-            ServiceCategory.PrintingAndWorkshop => FluentGlyphs.Printer,
+            ServiceCategory.PrintAndScan => FluentGlyphs.Print,
+            ServiceCategory.StorageAndFiles => FluentGlyphs.HardDrive,
+            ServiceCategory.PrintingAndWorkshop => FluentGlyphs.Print,
             ServiceCategory.CamerasAndVideo => FluentGlyphs.Camera,
-            ServiceCategory.AppleEcosystem => FluentGlyphs.ConnectedDevices,
-            ServiceCategory.Databases => FluentGlyphs.Database,
-            ServiceCategory.Developer => FluentGlyphs.DeveloperCode,
-            ServiceCategory.Infrastructure => FluentGlyphs.Network,
-            _ => FluentGlyphs.Network
+            ServiceCategory.AppleEcosystem => FluentGlyphs.Devices3,
+            ServiceCategory.Databases => FluentGlyphs.HardDrive,
+            ServiceCategory.Developer => FluentGlyphs.DeveloperTools,
+            ServiceCategory.Infrastructure => FluentGlyphs.Ethernet,
+            _ => FluentGlyphs.Ethernet
         };
     }
 
     private static readonly (string[] Keywords, string Glyph)[] _hostGlyphKeywordRules =
     [
-        (["printer", "print", "laserjet", "deskjet", "epson", "canon", "brother"], FluentGlyphs.Printer),
+        (["printer", "print", "laserjet", "deskjet", "epson", "canon", "brother"], FluentGlyphs.Print),
         (["light", "bulb", "hue", "wled", "shelly", "yeelight", "elgato", "lamp"], FluentGlyphs.Lightbulb),
-        (["tv", "chromecast", "cast", "waipu", "firetv", "sonos", "speaker", "audio", "sound"], FluentGlyphs.TvSpeaker),
-        (["ipad", "iphone", "phone", "android", "pixel", "galaxy"], FluentGlyphs.MobileTablet),
-        (["laptop", "macbook", "notebook"], FluentGlyphs.Laptop),
-        (["pi", "raspberry", "nas", "server", "synology", "qnap", "gateway", "router", "desktop", "pc", "station"], FluentGlyphs.ServerHost)
+        (["tv", "chromecast", "cast", "waipu", "firetv", "sonos", "speaker", "audio", "sound"], FluentGlyphs.Volume),
+        (["ipad", "iphone", "phone", "android", "pixel", "galaxy"], FluentGlyphs.Tablet),
+        (["laptop", "macbook", "notebook"], FluentGlyphs.DeviceLaptopNoPic),
+        (["pi", "raspberry", "nas", "server", "synology", "qnap", "gateway", "router", "desktop", "pc", "station"], FluentGlyphs.TVMonitor)
     ];
 
     public static string FormatGroupGlyph(string key, GroupingMode mode)
@@ -272,7 +272,7 @@ public static class ServiceDisplayFormatter
         }
 
         if (string.IsNullOrWhiteSpace(key))
-            return FluentGlyphs.ServerHost;
+            return FluentGlyphs.TVMonitor;
 
         foreach (var (keywords, glyph) in _hostGlyphKeywordRules)
         {
@@ -282,7 +282,7 @@ public static class ServiceDisplayFormatter
             }
         }
 
-        return FluentGlyphs.ServerHost;
+        return FluentGlyphs.TVMonitor;
     }
 
     public static string GetFormatDisplayName(ExportFormat format)

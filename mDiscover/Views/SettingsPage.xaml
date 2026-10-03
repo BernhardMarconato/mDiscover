@@ -43,7 +43,7 @@
 
                     <controls:SettingsCard Description="{x:Bind strings:Resources.Settings_ThemeDescription}" Header="{x:Bind strings:Resources.Settings_ThemeCard}">
                         <controls:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Theme}" />
+                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Color}" />
                         </controls:SettingsCard.HeaderIcon>
                         <ComboBox MinWidth="220" SelectedIndex="{x:Bind ViewModel.Settings.SelectedThemeIndex, Mode=TwoWay}">
                             <ComboBoxItem Content="{x:Bind strings:Resources.Theme_System}" />
@@ -97,7 +97,7 @@
                     <!--  SettingsCard: Active Provider  -->
                     <controls:SettingsCard Description="{x:Bind strings:Resources.Settings_ActiveEngineDescription}" Header="{x:Bind strings:Resources.Settings_ActiveEngineCard}">
                         <controls:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.RemoteAccess}" />
+                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.CommandPrompt}" />
                         </controls:SettingsCard.HeaderIcon>
                         <ComboBox MinWidth="220" SelectedIndex="{x:Bind ViewModel.Settings.ActiveProviderIndex, Mode=TwoWay}">
                             <ComboBoxItem Content="{x:Bind strings:Resources.Provider_Win32}" />
@@ -112,7 +112,7 @@
                         Header="{x:Bind strings:Resources.Settings_DiscoveryModeHeader}"
                         IsExpanded="True">
                         <controls:SettingsExpander.HeaderIcon>
-                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Network}" />
+                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Ethernet}" />
                         </controls:SettingsExpander.HeaderIcon>
                         <controls:SettingsExpander.Items>
                             <controls:SettingsCard Description="{x:Bind strings:Resources.Settings_UniversalWildcardDescription}" Header="{x:Bind strings:Resources.Settings_UniversalWildcardHeader}">
@@ -167,7 +167,7 @@
                         ItemsSource="{x:Bind ViewModel.Settings.CustomServiceTypes}"
                         Visibility="{x:Bind ViewModel.Settings.CustomServiceTypes.Count, Mode=OneWay, Converter={StaticResource CountToVisConverter}}">
                         <controls:SettingsExpander.HeaderIcon>
-                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.DeveloperCode}" />
+                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.DeveloperTools}" />
                         </controls:SettingsExpander.HeaderIcon>
 
                         <!--  Header Action: Clear All Custom Types  -->
@@ -273,7 +273,7 @@
                                 <HyperlinkButton NavigateUri="https://github.com/BernhardMarconato/mDiscover">
                                     <StackPanel Orientation="Horizontal" Spacing="6">
                                         <TextBlock Text="BernhardMarconato/mDiscover" />
-                                        <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.ExternalLink}" />
+                                        <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.OpenInNewWindow}" />
                                     </StackPanel>
                                 </HyperlinkButton>
                             </controls:SettingsCard>
@@ -283,7 +283,7 @@
                                 <HyperlinkButton NavigateUri="https://github.com/BernhardMarconato/mDiscover/blob/main/LICENSE">
                                     <StackPanel Orientation="Horizontal" Spacing="6">
                                         <TextBlock Text="{x:Bind strings:Resources.About_ViewLicense}" />
-                                        <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.ExternalLink}" />
+                                        <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.OpenInNewWindow}" />
                                     </StackPanel>
                                 </HyperlinkButton>
                             </controls:SettingsCard>
@@ -309,7 +309,7 @@
                                 <HyperlinkButton NavigateUri="https://github.com/BernhardMarconato/mDiscover/blob/main/PRIVACY.md">
                                     <StackPanel Orientation="Horizontal" Spacing="6">
                                         <TextBlock Text="{x:Bind strings:Resources.About_ViewPrivacyPolicy}" />
-                                        <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.ExternalLink}" />
+                                        <FontIcon FontSize="12" Glyph="{x:Bind helpers:FluentGlyphs.OpenInNewWindow}" />
                                     </StackPanel>
                                 </HyperlinkButton>
                             </controls:SettingsCard>

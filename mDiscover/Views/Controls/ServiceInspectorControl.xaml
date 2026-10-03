@@ -17,38 +17,41 @@
 
     <Grid>
         <!--  Empty Details State  -->
-        <Grid
+        <StackPanel
             Margin="32"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            RowSpacing="8"
+            Spacing="16"
             Visibility="{x:Bind ViewModel, Mode=OneWay, Converter={StaticResource InverseNullToVisConverter}}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <FontIcon
-                Grid.Row="0"
+            <Border
+                Width="72"
+                Height="72"
                 HorizontalAlignment="Center"
-                FontSize="44"
-                Foreground="{ThemeResource TextFillColorTertiaryBrush}"
-                Glyph="{x:Bind helpers:FluentGlyphs.InspectorEmpty}" />
-            <TextBlock
-                Grid.Row="1"
-                HorizontalAlignment="Center"
-                Style="{ThemeResource SubtitleTextBlockStyle}"
-                Text="{x:Bind strings:Resources.Inspector_EmptyTitle}"
-                TextAlignment="Center"
-                TextWrapping="Wrap" />
-            <TextBlock
-                Grid.Row="2"
-                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                Style="{ThemeResource BodyTextBlockStyle}"
-                Text="{x:Bind strings:Resources.Inspector_EmptySubtitle}"
-                TextAlignment="Center"
-                TextWrapping="Wrap" />
-        </Grid>
+                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="36">
+                <FontIcon
+                    FontSize="32"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Glyph="{x:Bind helpers:FluentGlyphs.Devices3}" />
+            </Border>
+            <StackPanel HorizontalAlignment="Center" Spacing="4">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    Text="{x:Bind strings:Resources.Inspector_EmptyTitle}"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    MaxWidth="320"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Text="{x:Bind strings:Resources.Inspector_EmptySubtitle}"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </StackPanel>
 
         <!--  Selected Service Inspector (Fills Full Available Column Width)  -->
         <ScrollViewer HorizontalAlignment="Stretch" Visibility="{x:Bind ViewModel, Mode=OneWay, Converter={StaticResource NullToVisConverter}}">
@@ -188,7 +191,7 @@
                                         CommandParameter="{x:Bind models:ExportFormat.Text}"
                                         Text="{x:Bind strings:Resources.Format_Text}">
                                         <MenuFlyoutItem.Icon>
-                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportText}" />
+                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.List}" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                     <MenuFlyoutItem
@@ -196,7 +199,7 @@
                                         CommandParameter="{x:Bind models:ExportFormat.Markdown}"
                                         Text="{x:Bind strings:Resources.Format_Markdown}">
                                         <MenuFlyoutItem.Icon>
-                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportMarkdown}" />
+                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.BulletedList}" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                     <MenuFlyoutItem
@@ -204,7 +207,7 @@
                                         CommandParameter="{x:Bind models:ExportFormat.Csv}"
                                         Text="{x:Bind strings:Resources.Format_Csv}">
                                         <MenuFlyoutItem.Icon>
-                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportCsv}" />
+                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Tag}" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                     <MenuFlyoutItem
@@ -212,7 +215,7 @@
                                         CommandParameter="{x:Bind models:ExportFormat.Json}"
                                         Text="{x:Bind strings:Resources.Format_Json}">
                                         <MenuFlyoutItem.Icon>
-                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.ExportJson}" />
+                                            <FontIcon Glyph="{x:Bind helpers:FluentGlyphs.Code}" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                 </MenuFlyout>
@@ -335,9 +338,7 @@
                                     CornerRadius="{ThemeResource ControlCornerRadius}"
                                     IsActive="{x:Bind ViewModel.IsResolvingEndpoint, Mode=OneWay}"
                                     Visibility="{x:Bind ViewModel.IsResolvingEndpoint, Mode=OneWay, Converter={StaticResource BoolToVisConverter}}" />
-                                <RelativePanel
-                                    VerticalAlignment="Center"
-                                    Visibility="{x:Bind ViewModel.IsResolvingEndpoint, Mode=OneWay, Converter={StaticResource InverseBoolToVisConverter}}">
+                                <RelativePanel VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsResolvingEndpoint, Mode=OneWay, Converter={StaticResource InverseBoolToVisConverter}}">
                                     <TextBlock
                                         x:Name="PrimaryEndpointTextBlock"
                                         VerticalAlignment="Center"
@@ -347,7 +348,7 @@
                                         RelativePanel.AlignVerticalCenterWithPanel="True"
                                         Text="{x:Bind helpers:ServiceDisplayFormatter.FormatEndpoint(ViewModel.FormattedEndpoint, ViewModel.ResolutionStatus), Mode=OneWay}"
                                         TextWrapping="Wrap" />
-                                    <Button
+                                    <HyperlinkButton
                                         x:Name="OpenEndpointInBrowserButton"
                                         Margin="6,0,0,0"
                                         Padding="4"
@@ -355,11 +356,10 @@
                                         Command="{x:Bind ViewModel.OpenInBrowserCommand, Mode=OneWay}"
                                         RelativePanel.AlignVerticalCenterWithPanel="True"
                                         RelativePanel.RightOf="PrimaryEndpointTextBlock"
-                                        Style="{ThemeResource SubtleButtonStyle}"
                                         ToolTipService.ToolTip="{x:Bind strings:Resources.Action_Browse}"
                                         Visibility="{x:Bind ViewModel.CanOpenInBrowser, Mode=OneWay, Converter={StaticResource BoolToVisConverter}}">
-                                        <FontIcon FontSize="11" Glyph="{x:Bind helpers:FluentGlyphs.ExternalLink}" />
-                                    </Button>
+                                        <FontIcon FontSize="11" Glyph="{x:Bind helpers:FluentGlyphs.OpenInNewWindow}" />
+                                    </HyperlinkButton>
                                 </RelativePanel>
                             </Grid>
 
