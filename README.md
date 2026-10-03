@@ -70,7 +70,7 @@ Install directly from the [Microsoft Store](https://apps.microsoft.com/detail/9N
 
 ### Windows Package Manager (WinGet)
 ```powershell
-winget install burnArc.mDiscover
+winget install --exact --id 9N5LVZJM2ZWN --source msstore
 ```
 
 ## System requirements
