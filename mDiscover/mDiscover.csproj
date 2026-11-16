@@ -30,7 +30,7 @@
 		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.5.1" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="*" />
 
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.260610101">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
