@@ -40,7 +40,7 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.3.260402-preview2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.3.260402-preview2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.3.260402-preview2" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
 		<PackageReference Include="ReswPlus" Version="0.5.0" />
 		<PackageReference Include="NLog" Version="6.2.1" />
